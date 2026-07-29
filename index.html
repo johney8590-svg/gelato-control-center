@@ -486,6 +486,8 @@ $("#btnLogout").addEventListener("click", () => { sessionStorage.removeItem("gel
 /* ================= 啟動 ================= */
 if (DEMO) { TOKEN = "demo"; loadData(); }
 else if (TOKEN) { loadData(); }
+window.addEventListener("load", () => { if (window.Chart && DATA && !window.__pnlChart) renderPnl(); }); // Chart.js defer 載入完成後補畫圖表
+
 </script>
 </body>
 </html>
