@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gelato 品牌籌備中控</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
+<style>
+:root{
+  --green:#2D5016; --green-l:#8DB87A; --cream:#F8F5F0; --ink:#2C2C2C; --grey:#6B6B6B;
+  --ok:#28A745; --bad:#DC3545; --mid:#B58900; --mid-bg:#FFF3CD; --ok-bg:#E6F4EA; --bad-bg:#FDECEA;
+  --line:#E8E8E8; --white:#FFFFFF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC','Microsoft JhengHei','PingFang TC',sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6}
+button{font-family:inherit;cursor:pointer}
+/* ---------- 登入 ---------- */
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:40px 36px;width:100%;max-width:380px}
+.wordmark{font-size:13px;letter-spacing:.35em;color:var(--green);font-weight:700}
+.login-card h1{font-size:22px;font-weight:700;margin:6px 0 2px}
+.login-card .sub{font-size:13px;color:var(--grey);margin-bottom:26px}
+.login-card input{width:100%;padding:11px 14px;border:1px solid #CFCFCF;border-radius:4px;font-size:15px;margin-bottom:14px}
+.login-card input:focus{outline:none;border-color:var(--green)}
+.btn{background:var(--green);color:#fff;border:none;border-radius:4px;padding:11px 18px;font-size:15px;font-weight:600;width:100%}
+.btn:hover{background:#3A6B20}
+.btn-ghost{background:transparent;border:1px solid var(--green);color:var(--green);width:auto;padding:6px 14px;font-size:13px;font-weight:600;border-radius:4px}
+.msg{font-size:13px;color:var(--bad);min-height:20px;margin-top:10px}
+/* ---------- 頁首 ---------- */
+header{background:var(--white);border-bottom:1px solid var(--line)}
+.head-in{max-width:1180px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{width:34px;height:34px;background:var(--green);color:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.head-t .t1{font-size:17px;font-weight:700}
+.head-t .t2{font-size:11px;color:var(--grey);letter-spacing:.08em}
+.head-sp{flex:1}
+.head-meta{font-size:12px;color:var(--grey);text-align:right}
+/* ---------- 導航 ---------- */
+nav{background:var(--white);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.nav-in{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;gap:4px;overflow-x:auto}
+nav button{background:none;border:none;padding:12px 16px;font-size:14px;color:var(--grey);border-bottom:2px solid transparent;white-space:nowrap}
+nav button.on{color:var(--green);font-weight:700;border-bottom-color:var(--green)}
+/* ---------- 主體 ---------- */
+main{max-width:1180px;margin:0 auto;padding:24px 20px 60px}
+section{display:none}
+section.on{display:block}
+h2{font-size:16px;font-weight:700;margin:26px 0 12px;color:var(--ink)}
+h2:first-child{margin-top:0}
+h2 .hint{font-weight:400;font-size:12px;color:var(--grey);margin-left:8px}
+.card{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:16px 20px}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.kpi{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
+.kpi .k{font-size:12px;color:var(--grey)}
+.kpi .v{font-size:24px;font-weight:700;color:var(--green);margin-top:2px}
+.kpi .v.bad{color:var(--bad)} .kpi .v.mid{color:var(--mid)} .kpi .v.ok{color:var(--ok)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+table{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--line);font-size:13.5px}
+th{background:#F5F5F5;font-weight:600;font-size:12.5px;color:#444;text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid #F0F0F0;vertical-align:middle}
+tr:nth-child(even) td{background:#FAFAFA}
+tr:last-child td{border-bottom:none}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.t-scroll{overflow-x:auto;border-radius:6px}
+.badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:12px;font-weight:700}
+.b-ok{background:var(--ok-bg);color:var(--ok)} .b-mid{background:var(--mid-bg);color:var(--mid)} .b-bad{background:var(--bad-bg);color:var(--bad)}
+.b-grey{background:#EFEFEF;color:var(--grey)}
+.chip{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11.5px;background:#EFEFEF;color:var(--grey);margin-right:6px}
+.s-done{background:var(--ok-bg);color:var(--ok)} .s-run{background:#E8F0E1;color:var(--green)} .s-stuck{background:var(--bad-bg);color:var(--bad)} .s-wait{background:#EFEFEF;color:var(--grey)}
+.pbar{height:8px;background:#EFEFEF;border-radius:4px;overflow:hidden;min-width:90px}
+.pbar i{display:block;height:100%;background:var(--green-l)}
+.gwrap{position:relative;height:16px;background:#F3F1EC;border-radius:3px;min-width:220px}
+.gbar{position:absolute;top:2px;height:12px;border-radius:2px;background:var(--green-l)}
+.gbar.done{background:var(--green)} .gbar.stuck{background:var(--bad)} .gbar.wait{background:#D5E0CB}
+.gtoday{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.55}
+ul.alerts{list-style:none}
+ul.alerts li{padding:10px 14px;border:1px solid var(--line);border-left:3px solid var(--bad);background:var(--white);border-radius:4px;margin-bottom:8px;font-size:13.5px}
+ul.alerts li.info{border-left-color:var(--mid)}
+ul.alerts li.good{border-left-color:var(--ok)}
+.scen{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.scen .card h3{font-size:14px;color:var(--grey);font-weight:600;margin-bottom:8px}
+.scen .big{font-size:22px;font-weight:700}
+.scen .big.pos{color:var(--ok)} .scen .big.neg{color:var(--bad)}
+.scen .row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-bottom:1px dashed #EEE}
+.scen .row:last-child{border-bottom:none}
+.note{font-size:12px;color:var(--grey);margin-top:8px}
+.chart-box{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:16px;margin-bottom:16px}
+footer{border-top:1px solid var(--line);padding:16px 20px;text-align:center;font-size:11.5px;color:var(--grey)}
+.demo-tag{background:var(--mid-bg);color:var(--mid);font-size:11px;padding:2px 8px;border-radius:3px;font-weight:700;margin-left:8px}
+/* ---------- 行動版 ---------- */
+@media (max-width:768px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .grid2{grid-template-columns:1fr}
+  .scen{grid-template-columns:1fr}
+  .head-meta{display:none}
+  nav{position:fixed;top:auto;bottom:0;left:0;right:0;border-top:1px solid var(--line);border-bottom:none;box-shadow:0 -1px 4px rgba(0,0,0,.05)}
+  .nav-in{padding:0;justify-content:space-around;gap:0}
+  nav button{flex:1;padding:9px 2px 10px;font-size:12px;border-bottom:none;border-top:2px solid transparent;min-height:52px}
+  nav button.on{border-top-color:var(--green)}
+  main{padding-bottom:90px}
+}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="login-card">
+    <div class="wordmark">UG GELATO</div>
+    <h1>品牌籌備中控系統</h1>
+    <div class="sub">Gelato Brand Control Center</div>
+    <input id="pw" type="password" placeholder="輸入密碼" autocomplete="current-password">
+    <button class="btn" id="btnLogin">登入</button>
+    <div class="msg" id="loginMsg"></div>
+  </div>
+</div>
+
+<div id="app" hidden>
+  <header>
+    <div class="head-in">
+      <div class="logo">G</div>
+      <div class="head-t">
+        <div class="t1">Gelato 品牌籌備中控<span id="demoTag"></span></div>
+        <div class="t2">UG BRAND CONTROL CENTER</div>
+      </div>
+      <div class="head-sp"></div>
+      <div class="head-meta">資料更新：<span id="updatedAt">—</span></div>
+      <button class="btn-ghost" id="btnReload">重新整理</button>
+      <button class="btn-ghost" id="btnLogout">登出</button>
+    </div>
+  </header>
+  <nav><div class="nav-in">
+    <button data-tab="overview" class="on">總覽</button>
+    <button data-tab="gantt">甘特</button>
+    <button data-tab="recipes">配方</button>
+    <button data-tab="pricing">定價</button>
+    <button data-tab="pnl">損益</button>
+  </div></nav>
+  <main>
+    <section id="sec-overview" class="on">
+      <div class="kpis" id="kpiRow"></div>
+      <h2>系統判讀<span class="hint">依目前數據自動產生</span></h2>
+      <ul class="alerts" id="insights"></ul>
+      <div class="grid2">
+        <div>
+          <h2>階段進度</h2>
+          <div class="t-scroll"><table id="phaseTbl"></table></div>
+        </div>
+        <div>
+          <h2>警示任務</h2>
+          <ul class="alerts" id="alertTasks"></ul>
+        </div>
+      </div>
+    </section>
+    <section id="sec-gantt">
+      <h2>專案甘特<span class="hint">實際開始＝MAX(預定開始, 前置結束+1)，紅線＝今天</span></h2>
+      <div class="t-scroll"><table id="ganttTbl"></table></div>
+    </section>
+    <section id="sec-recipes">
+      <h2>配方版本總覽<span class="hint">成品成本以成本卡目前製程參數（產出率／展售損耗）計算</span></h2>
+      <div class="t-scroll"><table id="recipeTbl"></table></div>
+      <p class="note" id="ccNote"></p>
+    </section>
+    <section id="sec-pricing">
+      <h2>定價與毛利<span class="hint">成本率：≤30% 綠｜30–35% 橙｜>35% 紅（外送以扣抽成後實收計）</span></h2>
+      <div class="t-scroll"><table id="priceTbl"></table></div>
+      <p class="note">外送參考：Foodpanda 抽成 31%／UberEats 35%；外送與店內價差原則每份 13–18 元。</p>
+    </section>
+    <section id="sec-pnl">
+      <h2>三情境（單月・平季）</h2>
+      <div class="scen" id="scenRow"></div>
+      <h2>12 個月季節推演（基準情境）</h2>
+      <div class="chart-box"><canvas id="pnlChart" height="110"></canvas></div>
+      <div class="t-scroll"><table id="pnlTbl"></table></div>
+    </section>
+  </main>
+  <footer>資料來源：Google Sheets 中控檔（由 GAS API 供應）｜UG 設計規範</footer>
+</div>
+
+<script>
+/* ================= 設定 ================= */
+const API_URL = "https://script.google.com/macros/s/AKfycbxGJxs5Xa9rZ0qD4_pkEFFJoOeD-rm7QZ90O2qTLYQWyjBgXhH5PhEJSvyM0pos8UtmUw/exec";
+const DEMO = new URLSearchParams(location.search).get("demo") === "1";
+
+/* ================= 展示資料（?demo=1；數字取自 2026-07-29 驗證過的中控檔） ================= */
+const DEMO_DATA = {
+  ok:true,
+  meta:{generatedAt:"2026/07/29 15:20（demo）"},
+  kpi:{progress:0.0727,approved:2,testing:4,alerts:1,weightedCostRate:0.3725,baseMonthlyProfit:419000},
+  phases:[
+    {phase:"P0 前期定位",tasks:2,done:0.659},{phase:"P1 品牌視覺",tasks:4,done:0},
+    {phase:"P2 產品研發",tasks:6,done:0.087},{phase:"P3 生產設備",tasks:7,done:0.018},
+    {phase:"P4 營運行銷",tasks:7,done:0}
+  ],
+  gantt:[
+    {id:"T01",phase:"P0 前期定位",task:"品牌核心定位與故事論述",owner:"Robert",dep:null,start:"2026-08-01",end:"2026-08-14",durDays:14,status:"已完成",done:1,warn:"",note:""},
+    {id:"T02",phase:"P0 前期定位",task:"商圈評估與店址簽約",owner:"Robert",dep:null,start:"2026-08-01",end:"2026-08-30",durDays:30,status:"進行中",done:0.5,warn:"",note:""},
+    {id:"T03",phase:"P1 品牌視覺",task:"Logo／標準字／品牌色票定案",owner:"設計",dep:"T01",start:"2026-08-15",end:"2026-09-04",durDays:21,status:"未開始",done:0,warn:"",note:""},
+    {id:"T07",phase:"P2 產品研發",task:"配方資料庫與成本系統建置",owner:"Robert",dep:null,start:"2026-08-01",end:"2026-08-07",durDays:7,status:"進行中",done:0.6,warn:"",note:"M1 已交付"},
+    {id:"T08",phase:"P2 產品研發",task:"基礎 Base 配方定案",owner:"研發",dep:"T07",start:"2026-08-08",end:"2026-08-28",durDays:21,status:"未開始",done:0,warn:"",note:""},
+    {id:"T11",phase:"P2 產品研發",task:"原物料供應商尋價／二供備援",owner:"採購",dep:null,start:"2026-08-15",end:"2026-09-28",durDays:45,status:"卡關",done:0.2,warn:"⚠ 卡關",note:"開心果醬超預算"},
+    {id:"T13",phase:"P3 生產設備",task:"設備規格盤點與詢價",owner:"Robert",dep:null,start:"2026-08-01",end:"2026-08-14",durDays:14,status:"進行中",done:0.3,warn:"",note:""},
+    {id:"T14",phase:"P3 生產設備",task:"設備下訂（進口交期90天）★關鍵路徑",owner:"採購",dep:"T13",start:"2026-08-15",end:"2026-11-12",durDays:90,status:"未開始",done:0,warn:"",note:""},
+    {id:"T17",phase:"P3 生產設備",task:"設備進場安裝與試機",owner:"工務",dep:"T14",start:"2026-11-13",end:"2026-11-22",durDays:10,status:"未開始",done:0,warn:"",note:""},
+    {id:"T23",phase:"P4 營運行銷",task:"前台動線壓力測試／試營運",owner:"營運",dep:"T17",start:"2026-11-23",end:"2026-12-02",durDays:10,status:"未開始",done:0,warn:"",note:""},
+    {id:"T26",phase:"P4 營運行銷",task:"正式開幕",owner:"全體",dep:"T23",start:"2027-01-08",end:"2027-01-08",durDays:1,status:"未開始",done:0,warn:"",note:"12月試營運緩衝"}
+  ],
+  costcard:{version:"PIS-v2",flavor:"西西里開心果",type:"乳基",yieldRate:0.92,overrun:0.30,density:1.08,displayLoss:0.05,finishedPerG:0.4195,solids:0.3845,sugar:0.1800,fat:0.1164,verdicts:["✓ 平衡","✓ 平衡","✓ 平衡"]},
+  recipes:[
+    {version:"BASE-v1",flavor:"經典白基底",type:"乳基",status:"定案",grams:1000,mixCostPerKg:122.0,finishedPerG:0.1396,solids:0.360,sugar:0.226,fat:0.079,judgeSolids:"平衡",judgeSugar:"平衡",judgeFat:"平衡"},
+    {version:"PIS-v1",flavor:"西西里開心果",type:"乳基",status:"封存",grams:999.7,mixCostPerKg:365.6,finishedPerG:0.4183,solids:0.411,sugar:0.209,fat:0.115,judgeSolids:"平衡",judgeSugar:"平衡",judgeFat:"平衡"},
+    {version:"PIS-v2",flavor:"西西里開心果",type:"乳基",status:"定案",grams:999.7,mixCostPerKg:366.6,finishedPerG:0.4195,solids:0.384,sugar:0.180,fat:0.116,judgeSolids:"平衡",judgeSugar:"平衡",judgeFat:"平衡"},
+    {version:"VAN-v1",flavor:"馬達加斯加香草",type:"乳基",status:"測試中",grams:1002,mixCostPerKg:167.7,finishedPerG:0.1919,solids:0.362,sugar:0.224,fat:0.080,judgeSolids:"平衡",judgeSugar:"平衡",judgeFat:"平衡"},
+    {version:"CHO-v1",flavor:"特濃可可",type:"乳基",status:"測試中",grams:1000,mixCostPerKg:139.2,finishedPerG:0.1593,solids:0.414,sugar:0.241,fat:0.073,judgeSolids:"平衡",judgeSugar:"偏高",judgeFat:"平衡"},
+    {version:"STR-v1",flavor:"大湖草莓雪酪",type:"雪酪",status:"測試中",grams:1000,mixCostPerKg:179.5,finishedPerG:0.2054,solids:0.318,sugar:0.299,fat:0.002,judgeSolids:"平衡",judgeSugar:"平衡",judgeFat:"平衡"},
+    {version:"MGO-v1",flavor:"愛文芒果雪酪",type:"雪酪",status:"測試中",grams:1000,mixCostPerKg:88.3,finishedPerG:0.1010,solids:0.329,sugar:0.303,fat:0.002,judgeSolids:"平衡",judgeSugar:"平衡",judgeFat:"平衡"}
+  ],
+  pricing:{items:[
+    {name:"內用/外帶 單球杯",unitCost:50.60,price:150,costRate:0.3373,margin:99.40,marginRate:0.6627,dPrice:145,dFee:0.35,dNet:94.25,dMargin:43.65,dMarginRate:0.4631,share:0.15},
+    {name:"內用/外帶 雙球杯",unitCost:68.18,price:180,costRate:0.3788,margin:111.82,marginRate:0.6212,dPrice:210,dFee:0.35,dNet:136.50,dMargin:68.32,dMarginRate:0.5005,share:0.85}
+  ],weighted:{costRate:0.3725,avgPrice:175.5}},
+  pnl:{
+    params:{
+      "日均來客":{con:150,base:200,opt:300},"平均客單價":{con:230,base:230,opt:230},"月營業天數":{con:30,base:30,opt:30},
+      "外送營收佔比":{con:0.15,base:0.20,opt:0.25},"外送平台平均抽成":{con:0.35,base:0.35,opt:0.35},
+      "食材＋包材成本率":{con:0.33,base:0.32,opt:0.30},"月租金":{con:75000,base:75000,opt:75000},
+      "月人事費":{con:176400,base:198400,opt:262400},"水電瓦斯":{con:35000,base:38000,opt:40000},
+      "行銷費率":{con:0.03,base:0.03,opt:0.03},"雜支耗材":{con:20000,base:20000,opt:20000},
+      "月折舊":{con:50000,base:50000,opt:50000},"開辦投資合計":{con:3500000,base:3500000,opt:3500000}
+    },
+    result:{
+      revenue:{con:1035000,base:1380000,opt:2070000},
+      profit:{con:251662,base:419000,opt:758375},
+      profitRate:{con:0.2432,base:0.3036,opt:0.3664},
+      breakeven:{con:87.9,base:95.3,opt:111.3},
+      payback:{con:14,base:8,opt:5}
+    },
+    months:{
+      coef:[0.6,0.65,0.85,1,1.2,1.5,1.5,1.7,1.7,1.7,1,0.6],coefTotal:14.0,
+      revenue:[828000,897000,1173000,1380000,1656000,2070000,2070000,2346000,2346000,2346000,1380000,828000],revenueTotal:19320000,
+      profit:[98840,138860,298940,419000,579080,819200,819200,979280,979280,979280,419000,98840],profitTotal:6628800,
+      cum:[98840,237700,536640,955640,1534720,2353920,3173120,4152400,5131680,6110960,6529960,6628800]
+    }
+  }
+};
+
+/* ================= 工具 ================= */
+const $ = (s) => document.querySelector(s);
+const nt = new Intl.NumberFormat("zh-TW");
+const money = (v) => v == null ? "—" : nt.format(Math.round(v));
+const pct = (v, d=1) => v == null ? "—" : (v*100).toFixed(d) + "%";
+const costBadge = (v) => v == null ? "" : `<span class="badge ${v<=0.30?"b-ok":v<=0.35?"b-mid":"b-bad"}">${pct(v)}</span>`;
+const dCostBadge = (v) => { // 外送：以扣抽成後實收的成本率評帶（較寬）
+  if (v == null) return "";
+  const cr = 1 - v; // v=外送毛利率
+  return `<span class="badge ${cr<=0.40?"b-ok":cr<=0.50?"b-mid":"b-bad"}">${pct(v)}</span>`;
+};
+const statusChip = (s) => {
+  const cls = s==="已完成"?"s-done":s==="進行中"?"s-run":s==="卡關"?"s-stuck":"s-wait";
+  return `<span class="chip ${cls}">${s}</span>`;
+};
+const judgeBadge = (j) => !j ? "—" : j==="平衡" ? `<span class="badge b-ok">✓</span>` : `<span class="badge b-bad">⚠ ${j}</span>`;
+
+/* ================= API ================= */
+async function api(body) {
+  if (DEMO) {
+    if (body.action === "login") return { ok:true, token:"demo" };
+    return DEMO_DATA;
+  }
+  const res = await fetch(API_URL, {
+    method:"POST",
+    headers:{ "Content-Type":"text/plain;charset=utf-8" },
+    body: JSON.stringify(body)
+  });
+  return res.json();
+}
+
+let TOKEN = sessionStorage.getItem("gelato_token") || "";
+let DATA = null;
+
+async function doLogin() {
+  const pw = $("#pw").value;
+  $("#loginMsg").textContent = "登入中…";
+  try {
+    const r = await api({ action:"login", password:pw });
+    if (!r.ok) { $("#loginMsg").textContent = r.error==="bad_password" ? "密碼錯誤" : "登入失敗：" + (r.error||""); return; }
+    TOKEN = r.token; sessionStorage.setItem("gelato_token", TOKEN);
+    $("#loginMsg").textContent = "";
+    await loadData();
+  } catch (e) { $("#loginMsg").textContent = "無法連線 API，請確認網址與網路"; }
+}
+
+async function loadData() {
+  try {
+    const r = await api({ action:"data", token:TOKEN });
+    if (!r.ok) {
+      if (r.error === "unauthorized") {
+        sessionStorage.removeItem("gelato_token"); TOKEN = "";
+        showLogin("登入已逾時（token 約 6 小時過期），請重新登入");
+      } else showLogin("讀取失敗：" + (r.error||""));
+      return;
+    }
+    DATA = r;
+    $("#login").style.display = "none";
+    $("#app").hidden = false;
+    $("#demoTag").innerHTML = DEMO ? '<span class="demo-tag">DEMO</span>' : "";
+    renderAll();
+  } catch (e) { showLogin("無法連線 API，請確認部署網址"); }
+}
+
+function showLogin(msg) {
+  $("#app").hidden = true;
+  $("#login").style.display = "flex";
+  $("#loginMsg").textContent = msg || "";
+}
+
+/* ================= 渲染 ================= */
+function renderAll() {
+  $("#updatedAt").textContent = DATA.meta?.generatedAt || "—";
+  renderKpi(); renderInsights(); renderPhases(); renderAlertTasks();
+  renderGantt(); renderRecipes(); renderPricing(); renderPnl();
+}
+
+function renderKpi() {
+  const k = DATA.kpi, w = k.weightedCostRate, p = k.baseMonthlyProfit;
+  $("#kpiRow").innerHTML = `
+    <div class="kpi"><div class="k">整體專案完成度</div><div class="v">${pct(k.progress)}</div></div>
+    <div class="kpi"><div class="k">已定案口味</div><div class="v">${k.approved ?? "—"}</div></div>
+    <div class="kpi"><div class="k">測試中口味</div><div class="v">${k.testing ?? "—"}</div></div>
+    <div class="kpi"><div class="k">卡關＋逾期任務</div><div class="v ${k.alerts>0?"bad":"ok"}">${k.alerts ?? "—"}</div></div>
+    <div class="kpi"><div class="k">加權成本率（店內）</div><div class="v ${w>0.35?"bad":w>0.30?"mid":"ok"}">${pct(w)}</div></div>
+    <div class="kpi"><div class="k">基準月營業利益</div><div class="v ${p<0?"bad":"ok"}">${money(p)}</div></div>`;
+}
+
+function renderInsights() {
+  const out = [];
+  const g = DATA.gantt || [], k = DATA.kpi, pr = DATA.pricing, pn = DATA.pnl;
+  g.filter(t => t.warn).forEach(t => out.push({cls:"", txt:`<b>${t.id} ${t.task}</b>：${t.warn}${t.note?`（${t.note}）`:""} → 優先處理，這是目前的紅燈。`}));
+  const sheetRate = pn?.params?.["食材＋包材成本率"]?.base, simRate = pr?.weighted?.costRate;
+  if (sheetRate != null && simRate != null && Math.abs(sheetRate - simRate) > 0.01) {
+    const rev = pn?.result?.revenue?.base || 0;
+    const diff = Math.round(rev * Math.abs(simRate - sheetRate));
+    out.push({cls:"info", txt:`定價頁加權成本率 <b>${pct(simRate)}</b> 與損益表輸入的 <b>${pct(sheetRate)}</b> 差 ${((simRate-sheetRate)*100).toFixed(1)} 個百分點（以目前成本卡口味計）≈ 月利差 <b>${money(diff)}</b> 元 → 請確認損益用哪個成本率、或把口味組合佔比調成實際菜單。`});
+  }
+  const ct = pn?.months?.coefTotal;
+  if (ct != null && Math.abs(ct - 12) > 0.05) {
+    out.push({cls:"info", txt:`季節係數合計 <b>${ct.toFixed(1)}</b>（原設計＝12）：代表全年＝${ct.toFixed(1)} 個「基準月」當量，全年數字比 12×基準月高 ${(((ct/12)-1)*100).toFixed(0)}%。若是刻意樂觀請保留；若是誤植請把係數攤回合計 12。`});
+  }
+  const be = pn?.result?.breakeven?.base, cust = pn?.params?.["日均來客"]?.base;
+  if (be != null && cust != null) {
+    const ratio = cust / be;
+    out.push({cls: ratio >= 1.5 ? "good" : ratio >= 1.1 ? "info" : "", txt:`損益兩平 <b>${be.toFixed(0)} 人/日</b>，基準假設 ${cust} 人 → 安全墊 <b>${ratio.toFixed(2)}×</b>${ratio<1.1?"（貼著兩平線，優先驗證商圈流量）":ratio<1.5?"（尚可，開幕前仍建議實測商圈流量）":"（充足，但仍以實測為準）"}。`});
+  }
+  (pr?.items||[]).filter(i => i.dMarginRate != null && i.dMarginRate < 0.45).forEach(i =>
+    out.push({cls:"info", txt:`外送「${i.name}」扣抽成後毛利率僅 <b>${pct(i.dMarginRate)}</b> → 檢視外送價differential或只上高毛利品項。`}));
+  $("#insights").innerHTML = out.length ? out.map(o=>`<li class="${o.cls}">${o.txt}</li>`).join("") : `<li class="good">目前無警示。</li>`;
+}
+
+function renderPhases() {
+  const rows = (DATA.phases||[]).map(p => `
+    <tr><td>${p.phase}</td><td class="num">${p.tasks ?? "—"}</td>
+      <td style="width:45%"><div style="display:flex;align-items:center;gap:8px">
+        <div class="pbar" style="flex:1"><i style="width:${Math.round((p.done||0)*100)}%"></i></div>
+        <span style="font-size:12.5px;color:var(--grey)">${pct(p.done)}</span></div></td></tr>`).join("");
+  $("#phaseTbl").innerHTML = `<thead><tr><th>階段</th><th class="num">任務數</th><th>加權完成度</th></tr></thead><tbody>${rows}</tbody>`;
+}
+
+function renderAlertTasks() {
+  const list = (DATA.gantt||[]).filter(t => t.warn || t.status === "卡關");
+  $("#alertTasks").innerHTML = list.length
+    ? list.map(t=>`<li><b>${t.id}</b> ${t.task}｜${statusChip(t.status)} 完成 ${pct(t.done,0)}${t.note?`<div class="note">${t.note}</div>`:""}</li>`).join("")
+    : `<li class="good">沒有卡關或逾期的任務。</li>`;
+}
+
+function renderGantt() {
+  const g = DATA.gantt || [];
+  if (!g.length) { $("#ganttTbl").innerHTML = "<tbody><tr><td>無任務</td></tr></tbody>"; return; }
+  const ds = g.filter(t=>t.start&&t.end);
+  const min = Math.min(...ds.map(t=>+new Date(t.start)));
+  const max = Math.max(...ds.map(t=>+new Date(t.end)));
+  const span = Math.max(max - min, 1);
+  const today = Date.now();
+  const todayPct = today>=min && today<=max ? ((today-min)/span*100) : null;
+  const rows = g.map(t => {
+    let bar = "";
+    if (t.start && t.end) {
+      const l = ((+new Date(t.start))-min)/span*100;
+      const w = Math.max(((+new Date(t.end))-(+new Date(t.start)))/span*100, 0.8);
+      const cls = t.status==="卡關"?"stuck":t.done>=1?"done":t.status==="進行中"?"":"wait";
+      bar = `<div class="gwrap">${todayPct!=null?`<div class="gtoday" style="left:${todayPct}%"></div>`:""}<div class="gbar ${cls}" style="left:${l}%;width:${w}%"></div></div>`;
+    }
+    return `<tr>
+      <td style="white-space:nowrap"><b>${t.id}</b></td>
+      <td><span class="chip">${(t.phase||"").slice(0,2)}</span>${t.task}<div class="note">${t.owner||""}${t.dep?`｜前置 ${t.dep}`:""}${t.note?`｜${t.note}`:""}</div></td>
+      <td class="num" style="white-space:nowrap">${t.start||"—"}<br>${t.end||"—"}</td>
+      <td>${statusChip(t.status)}</td>
+      <td class="num">${pct(t.done,0)}</td>
+      <td>${bar}</td></tr>`;
+  }).join("");
+  $("#ganttTbl").innerHTML = `<thead><tr><th>編號</th><th>任務</th><th class="num">起訖</th><th>狀態</th><th class="num">完成</th><th>時間軸</th></tr></thead><tbody>${rows}</tbody>`;
+}
+
+function renderRecipes() {
+  const rows = (DATA.recipes||[]).map(r => `
+    <tr><td><b>${r.version}</b></td><td>${r.flavor||""}</td><td>${r.type||""}</td>
+      <td>${statusChip(r.status||"—")}</td>
+      <td class="num">${r.mixCostPerKg==null?"—":nt.format(Math.round(r.mixCostPerKg))}</td>
+      <td class="num">${r.finishedPerG==null?"—":r.finishedPerG.toFixed(3)}</td>
+      <td class="num">${pct(r.solids)}</td><td class="num">${pct(r.sugar)}</td><td class="num">${pct(r.fat)}</td>
+      <td>${judgeBadge(r.judgeSolids)} ${judgeBadge(r.judgeSugar)} ${judgeBadge(r.judgeFat)}</td></tr>`).join("");
+  $("#recipeTbl").innerHTML = `<thead><tr><th>版本</th><th>口味</th><th>類型</th><th>狀態</th>
+    <th class="num">Mix成本(元/kg)</th><th class="num">成品成本(元/g)</th>
+    <th class="num">固形物</th><th class="num">糖度</th><th class="num">脂肪</th><th>平衡(固/糖/脂)</th></tr></thead><tbody>${rows}</tbody>`;
+  const cc = DATA.costcard;
+  $("#ccNote").textContent = cc ? `成本卡目前選擇：${cc.version}（${cc.flavor}）｜產出率 ${pct(cc.yieldRate,0)}｜Overrun ${pct(cc.overrun,0)}｜展售損耗 ${pct(cc.displayLoss,0)}｜成品每克 ${cc.finishedPerG?.toFixed(4)} 元` : "";
+}
+
+function renderPricing() {
+  const p = DATA.pricing || {items:[]};
+  const rows = p.items.map(i => `
+    <tr><td><b>${i.name}</b></td>
+      <td class="num">${i.unitCost?.toFixed(1) ?? "—"}</td>
+      <td class="num">${money(i.price)}</td>
+      <td class="num">${costBadge(i.costRate)}</td>
+      <td class="num">${pct(i.marginRate)}</td>
+      <td class="num">${money(i.dPrice)}</td>
+      <td class="num">${i.dNet?.toFixed(0) ?? "—"}</td>
+      <td class="num">${dCostBadge(i.dMarginRate)}</td>
+      <td class="num">${pct(i.share,0)}</td></tr>`).join("");
+  const w = p.weighted || {};
+  $("#priceTbl").innerHTML = `<thead><tr><th>品項</th><th class="num">變動成本</th><th class="num">店內售價</th><th class="num">店內成本率</th><th class="num">店內毛利率</th><th class="num">外送售價</th><th class="num">外送實收</th><th class="num">外送毛利率</th><th class="num">銷量佔比</th></tr></thead>
+    <tbody>${rows}
+    <tr><td colspan="3"><b>加權平均（依銷量佔比）</b></td><td class="num">${costBadge(w.costRate)}</td>
+    <td colspan="4" class="note">加權平均店內售價（客單價參考）</td><td class="num"><b>${w.avgPrice?.toFixed(1) ?? "—"}</b></td></tr></tbody>`;
+}
+
+function renderPnl() {
+  const r = DATA.pnl?.result, p = DATA.pnl?.params, m = DATA.pnl?.months;
+  if (!r) return;
+  const scen = [["保守","con"],["基準","base"],["樂觀","opt"]].map(([name,key]) => {
+    const prof = r.profit?.[key];
+    return `<div class="card"><h3>${name}</h3>
+      <div class="big ${prof>=0?"pos":"neg"}">${money(prof)} <span style="font-size:12px;color:var(--grey)">元/月</span></div>
+      <div class="row"><span>月營收</span><b>${money(r.revenue?.[key])}</b></div>
+      <div class="row"><span>營業利益率</span><b>${pct(r.profitRate?.[key])}</b></div>
+      <div class="row"><span>損益兩平日來客</span><b>${r.breakeven?.[key]?.toFixed(0) ?? "—"} 人</b></div>
+      <div class="row"><span>回本月數（開辦 ${money(p?.["開辦投資合計"]?.[key])}）</span><b>${r.payback?.[key] ?? "—"} 個月</b></div>
+      <div class="row"><span>日均來客假設</span><b>${p?.["日均來客"]?.[key] ?? "—"} 人 × ${money(p?.["平均客單價"]?.[key])} 元</b></div>
+    </div>`;
+  }).join("");
+  $("#scenRow").innerHTML = scen;
+  const mn = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
+  if (m) {
+    const rows = `
+      <tr><td>季節係數</td>${m.coef.map(v=>`<td class="num">${v?.toFixed(2)??"—"}</td>`).join("")}<td class="num"><b>${m.coefTotal?.toFixed(1)??"—"}</b></td></tr>
+      <tr><td>月營收</td>${m.revenue.map(v=>`<td class="num">${money(v)}</td>`).join("")}<td class="num"><b>${money(m.revenueTotal)}</b></td></tr>
+      <tr><td>月營業利益</td>${m.profit.map(v=>`<td class="num" style="color:${v<0?"var(--bad)":"var(--ok)"};font-weight:600">${money(v)}</td>`).join("")}<td class="num"><b style="color:${(m.profitTotal||0)<0?"var(--bad)":"var(--ok)"}">${money(m.profitTotal)}</b></td></tr>
+      <tr><td>累計</td>${m.cum.map(v=>`<td class="num">${money(v)}</td>`).join("")}<td></td></tr>`;
+    $("#pnlTbl").innerHTML = `<thead><tr><th></th>${mn.map(x=>`<th class="num">${x}</th>`).join("")}<th class="num">全年</th></tr></thead><tbody>${rows}</tbody>`;
+    if (window.Chart) {
+      const ctx = document.getElementById("pnlChart");
+      if (window.__pnlChart) window.__pnlChart.destroy();
+      window.__pnlChart = new Chart(ctx, {
+        type:"bar",
+        data:{ labels:mn, datasets:[{ label:"月營業利益", data:m.profit,
+          backgroundColor:m.profit.map(v=>v<0?"#DC3545":"#28A745"), borderRadius:2 }]},
+        options:{ responsive:true, plugins:{ legend:{display:false},
+          tooltip:{ callbacks:{ label:(c)=>" "+nt.format(Math.round(c.raw))+" 元" } } },
+          scales:{ y:{ ticks:{ callback:(v)=>nt.format(v) }, grid:{color:"#F0F0F0"} }, x:{ grid:{display:false} } } }
+      });
+    }
+  }
+}
+
+/* ================= 事件 ================= */
+document.querySelectorAll("nav button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("on"));
+  document.querySelectorAll("main section").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");
+  $("#sec-" + b.dataset.tab).classList.add("on");
+}));
+$("#btnLogin").addEventListener("click", doLogin);
+$("#pw").addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
+$("#btnReload").addEventListener("click", loadData);
+$("#btnLogout").addEventListener("click", () => { sessionStorage.removeItem("gelato_token"); TOKEN=""; showLogin("已登出"); });
+
+/* ================= 啟動 ================= */
+if (DEMO) { TOKEN = "demo"; loadData(); }
+else if (TOKEN) { loadData(); }
+</script>
+</body>
+</html>
