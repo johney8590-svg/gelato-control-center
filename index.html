@@ -16,38 +16,44 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans TC','Microsoft JhengHei','PingFang TC',sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.6}
 button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:14px;padding:7px 10px;border:1px solid #CFCFCF;border-radius:4px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green)}
 /* ---------- 登入 ---------- */
 #login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
 .login-card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:40px 36px;width:100%;max-width:380px}
 .wordmark{font-size:13px;letter-spacing:.35em;color:var(--green);font-weight:700}
 .login-card h1{font-size:22px;font-weight:700;margin:6px 0 2px}
 .login-card .sub{font-size:13px;color:var(--grey);margin-bottom:26px}
-.login-card input{width:100%;padding:11px 14px;border:1px solid #CFCFCF;border-radius:4px;font-size:15px;margin-bottom:14px}
-.login-card input:focus{outline:none;border-color:var(--green)}
-.btn{background:var(--green);color:#fff;border:none;border-radius:4px;padding:11px 18px;font-size:15px;font-weight:600;width:100%}
+.login-card input{width:100%;margin-bottom:14px;padding:11px 14px;font-size:15px}
+.btn{background:var(--green);color:#fff;border:none;border-radius:4px;padding:10px 18px;font-size:14px;font-weight:600}
 .btn:hover{background:#3A6B20}
-.btn-ghost{background:transparent;border:1px solid var(--green);color:var(--green);width:auto;padding:6px 14px;font-size:13px;font-weight:600;border-radius:4px}
+.btn-ghost{background:transparent;border:1px solid var(--green);color:var(--green);padding:6px 14px;font-size:13px;font-weight:600;border-radius:4px}
+.btn-mini{background:transparent;border:1px solid #C6C6C6;color:var(--grey);padding:2px 10px;font-size:12px;border-radius:3px}
+.btn-mini:hover{border-color:var(--green);color:var(--green)}
+.w100{width:100%}
 .msg{font-size:13px;color:var(--bad);min-height:20px;margin-top:10px}
-/* ---------- 頁首 ---------- */
+/* ---------- 頁首/導航 ---------- */
 header{background:var(--white);border-bottom:1px solid var(--line)}
-.head-in{max-width:1180px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.head-in{max-width:1220px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .logo{width:34px;height:34px;background:var(--green);color:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
 .head-t .t1{font-size:17px;font-weight:700}
 .head-t .t2{font-size:11px;color:var(--grey);letter-spacing:.08em}
 .head-sp{flex:1}
 .head-meta{font-size:12px;color:var(--grey);text-align:right}
-/* ---------- 導航 ---------- */
 nav{background:var(--white);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
-.nav-in{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;gap:4px;overflow-x:auto}
-nav button{background:none;border:none;padding:12px 16px;font-size:14px;color:var(--grey);border-bottom:2px solid transparent;white-space:nowrap}
+.nav-in{max-width:1220px;margin:0 auto;padding:0 20px;display:flex;gap:4px;overflow-x:auto}
+nav button{background:none;border:none;padding:12px 14px;font-size:14px;color:var(--grey);border-bottom:2px solid transparent;white-space:nowrap}
 nav button.on{color:var(--green);font-weight:700;border-bottom-color:var(--green)}
 /* ---------- 主體 ---------- */
-main{max-width:1180px;margin:0 auto;padding:24px 20px 60px}
+main{max-width:1220px;margin:0 auto;padding:24px 20px 60px}
 section{display:none}
 section.on{display:block}
-h2{font-size:16px;font-weight:700;margin:26px 0 12px;color:var(--ink)}
+h2{font-size:16px;font-weight:700;margin:26px 0 12px}
 h2:first-child{margin-top:0}
 h2 .hint{font-weight:400;font-size:12px;color:var(--grey);margin-left:8px}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px}
+.bar h2{margin:0}
+.bar .sp{flex:1}
 .card{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:16px 20px}
 .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
 .kpi{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
@@ -57,14 +63,13 @@ h2 .hint{font-weight:400;font-size:12px;color:var(--grey);margin-left:8px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 table{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--line);font-size:13.5px}
 th{background:#F5F5F5;font-weight:600;font-size:12.5px;color:#444;text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
-td{padding:9px 12px;border-bottom:1px solid #F0F0F0;vertical-align:middle}
+td{padding:8px 12px;border-bottom:1px solid #F0F0F0;vertical-align:middle}
 tr:nth-child(even) td{background:#FAFAFA}
 tr:last-child td{border-bottom:none}
 .num{text-align:right;font-variant-numeric:tabular-nums}
 .t-scroll{overflow-x:auto;border-radius:6px}
 .badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:12px;font-weight:700}
 .b-ok{background:var(--ok-bg);color:var(--ok)} .b-mid{background:var(--mid-bg);color:var(--mid)} .b-bad{background:var(--bad-bg);color:var(--bad)}
-.b-grey{background:#EFEFEF;color:var(--grey)}
 .chip{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11.5px;background:#EFEFEF;color:var(--grey);margin-right:6px}
 .s-done{background:var(--ok-bg);color:var(--ok)} .s-run{background:#E8F0E1;color:var(--green)} .s-stuck{background:var(--bad-bg);color:var(--bad)} .s-wait{background:#EFEFEF;color:var(--grey)}
 .pbar{height:8px;background:#EFEFEF;border-radius:4px;overflow:hidden;min-width:90px}
@@ -87,6 +92,21 @@ ul.alerts li.good{border-left-color:var(--ok)}
 .chart-box{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:16px;margin-bottom:16px}
 footer{border-top:1px solid var(--line);padding:16px 20px;text-align:center;font-size:11.5px;color:var(--grey)}
 .demo-tag{background:var(--mid-bg);color:var(--mid);font-size:11px;padding:2px 8px;border-radius:3px;font-weight:700;margin-left:8px}
+td input{width:76px;padding:4px 6px;font-size:13px;text-align:right}
+td select{padding:4px 6px;font-size:13px}
+/* ---------- Modal / Toast ---------- */
+#overlay{position:fixed;inset:0;background:rgba(44,44,44,.45);display:none;align-items:flex-start;justify-content:center;z-index:50;overflow-y:auto;padding:40px 16px}
+#overlay.on{display:flex}
+.modal{background:#fff;border-radius:8px;max-width:560px;width:100%;padding:24px;margin-bottom:40px}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:16px;color:var(--green)}
+.frow{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center;margin-bottom:10px}
+.frow label{font-size:13px;color:var(--grey)}
+.frow input,.frow select{width:100%}
+.m-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.ing-row{display:grid;grid-template-columns:1fr 90px 34px;gap:8px;margin-bottom:8px}
+#toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%);background:var(--green);color:#fff;padding:10px 20px;border-radius:6px;font-size:14px;opacity:0;transition:opacity .25s;z-index:60;pointer-events:none;max-width:90vw}
+#toast.on{opacity:1}
+#toast.err{background:var(--bad)}
 /* ---------- 行動版 ---------- */
 @media (max-width:768px){
   .kpis{grid-template-columns:repeat(2,1fr)}
@@ -95,9 +115,10 @@ footer{border-top:1px solid var(--line);padding:16px 20px;text-align:center;font
   .head-meta{display:none}
   nav{position:fixed;top:auto;bottom:0;left:0;right:0;border-top:1px solid var(--line);border-bottom:none;box-shadow:0 -1px 4px rgba(0,0,0,.05)}
   .nav-in{padding:0;justify-content:space-around;gap:0}
-  nav button{flex:1;padding:9px 2px 10px;font-size:12px;border-bottom:none;border-top:2px solid transparent;min-height:52px}
+  nav button{flex:1;padding:9px 2px 10px;font-size:11.5px;border-bottom:none;border-top:2px solid transparent;min-height:52px}
   nav button.on{border-top-color:var(--green)}
-  main{padding-bottom:90px}
+  main{padding-bottom:96px}
+  .frow{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -109,7 +130,7 @@ footer{border-top:1px solid var(--line);padding:16px 20px;text-align:center;font
     <h1>品牌籌備中控系統</h1>
     <div class="sub">Gelato Brand Control Center</div>
     <input id="pw" type="password" placeholder="輸入密碼" autocomplete="current-password">
-    <button class="btn" id="btnLogin">登入</button>
+    <button class="btn w100" id="btnLogin">登入</button>
     <div class="msg" id="loginMsg"></div>
   </div>
 </div>
@@ -132,6 +153,7 @@ footer{border-top:1px solid var(--line);padding:16px 20px;text-align:center;font
     <button data-tab="overview" class="on">總覽</button>
     <button data-tab="gantt">甘特</button>
     <button data-tab="recipes">配方</button>
+    <button data-tab="rm">原料</button>
     <button data-tab="pricing">定價</button>
     <button data-tab="pnl">損益</button>
   </div></nav>
@@ -150,41 +172,55 @@ footer{border-top:1px solid var(--line);padding:16px 20px;text-align:center;font
           <ul class="alerts" id="alertTasks"></ul>
         </div>
       </div>
+      <p class="note">日常作業（任務、配方、原料、定價、損益參數）都在各分頁直接編輯；試算表僅作為資料庫，不需開啟。誤改可用 Google Sheets「版本記錄」還原。</p>
     </section>
     <section id="sec-gantt">
-      <h2>專案甘特<span class="hint">實際開始＝MAX(預定開始, 前置結束+1)，紅線＝今天</span></h2>
+      <div class="bar"><h2>專案甘特<span class="hint">紅線＝今天；前置延期後續自動後推</span></h2><span class="sp"></span><button class="btn" data-act="task.new">＋ 新增任務</button></div>
       <div class="t-scroll"><table id="ganttTbl"></table></div>
     </section>
     <section id="sec-recipes">
-      <h2>配方版本總覽<span class="hint">成品成本以成本卡目前製程參數（產出率／展售損耗）計算</span></h2>
+      <div class="bar"><h2>配方版本<span class="hint">改版＝新增新版本號，舊版封存，全程可追溯</span></h2><span class="sp"></span><button class="btn" data-act="recipe.new">＋ 新增配方版本</button></div>
       <div class="t-scroll"><table id="recipeTbl"></table></div>
-      <p class="note" id="ccNote"></p>
+      <h2>製程參數<span class="hint">影響所有口味的成品成本；口味成本基準＝所選版本</span></h2>
+      <div class="card" id="ccCard"></div>
+    </section>
+    <section id="sec-rm">
+      <div class="bar"><h2>原物料主檔<span class="hint">改價後所有配方成本、定價、損益自動重算</span></h2><span class="sp"></span><button class="btn" data-act="rm.new">＋ 新增原料</button></div>
+      <div class="t-scroll"><table id="rmTbl"></table></div>
     </section>
     <section id="sec-pricing">
-      <h2>定價與毛利<span class="hint">成本率：≤30% 綠｜30–35% 橙｜>35% 紅（外送以扣抽成後實收計）</span></h2>
+      <div class="bar"><h2>定價與毛利<span class="hint">≤30% 綠｜30–35% 橙｜>35% 紅</span></h2></div>
       <div class="t-scroll"><table id="priceTbl"></table></div>
-      <p class="note">外送參考：Foodpanda 抽成 31%／UberEats 35%；外送與店內價差原則每份 13–18 元。</p>
+      <h2>售價單位（冰體克數）</h2>
+      <div class="t-scroll"><table id="bomTbl"></table></div>
+      <p class="note">外送參考：Foodpanda 抽成 31%／UberEats 35%；價差原則每份 13–18 元。冰體成本以「製程參數」所選版本口味計。</p>
     </section>
     <section id="sec-pnl">
-      <h2>三情境（單月・平季）</h2>
+      <div class="bar"><h2>損益參數（三情境）</h2><span class="sp"></span><button class="btn" data-act="pnl.save">儲存變更</button></div>
+      <div class="t-scroll"><table id="pnlParamTbl"></table></div>
+      <h2>三情境結果</h2>
       <div class="scen" id="scenRow"></div>
-      <h2>12 個月季節推演（基準情境）</h2>
+      <div class="bar"><h2>12 個月季節推演（基準）</h2><span class="sp"></span><button class="btn-ghost" data-act="coef.save">儲存係數</button></div>
+      <div class="t-scroll" style="margin-bottom:12px"><table id="coefTbl"></table></div>
       <div class="chart-box"><canvas id="pnlChart" height="110"></canvas></div>
       <div class="t-scroll"><table id="pnlTbl"></table></div>
     </section>
   </main>
-  <footer>資料來源：Google Sheets 中控檔（由 GAS API 供應）｜UG 設計規範</footer>
+  <footer>Gelato 中控 M3（儀表板作業版）｜資料庫：Google Sheets（免開啟）｜UG 設計規範</footer>
 </div>
+
+<div id="overlay"><div class="modal" id="modalBox"></div></div>
+<div id="toast"></div>
 
 <script>
 /* ================= 設定 ================= */
 const API_URL = "https://script.google.com/macros/s/AKfycbxGJxs5Xa9rZ0qD4_pkEFFJoOeD-rm7QZ90O2qTLYQWyjBgXhH5PhEJSvyM0pos8UtmUw/exec";
 const DEMO = new URLSearchParams(location.search).get("demo") === "1";
 
-/* ================= 展示資料（?demo=1；數字取自 2026-07-29 驗證過的中控檔） ================= */
+/* ================= 展示資料（?demo=1） ================= */
 const DEMO_DATA = {
   ok:true,
-  meta:{generatedAt:"2026/07/29 15:20（demo）"},
+  meta:{generatedAt:"demo（本機模擬，含即時重算）"},
   kpi:{progress:0.0727,approved:2,testing:4,alerts:1,weightedCostRate:0.3725,baseMonthlyProfit:419000},
   phases:[
     {phase:"P0 前期定位",tasks:2,done:0.659},{phase:"P1 品牌視覺",tasks:4,done:0},
@@ -192,54 +228,78 @@ const DEMO_DATA = {
     {phase:"P4 營運行銷",tasks:7,done:0}
   ],
   gantt:[
-    {id:"T01",phase:"P0 前期定位",task:"品牌核心定位與故事論述",owner:"Robert",dep:null,start:"2026-08-01",end:"2026-08-14",durDays:14,status:"已完成",done:1,warn:"",note:""},
-    {id:"T02",phase:"P0 前期定位",task:"商圈評估與店址簽約",owner:"Robert",dep:null,start:"2026-08-01",end:"2026-08-30",durDays:30,status:"進行中",done:0.5,warn:"",note:""},
-    {id:"T03",phase:"P1 品牌視覺",task:"Logo／標準字／品牌色票定案",owner:"設計",dep:"T01",start:"2026-08-15",end:"2026-09-04",durDays:21,status:"未開始",done:0,warn:"",note:""},
-    {id:"T07",phase:"P2 產品研發",task:"配方資料庫與成本系統建置",owner:"Robert",dep:null,start:"2026-08-01",end:"2026-08-07",durDays:7,status:"進行中",done:0.6,warn:"",note:"M1 已交付"},
-    {id:"T08",phase:"P2 產品研發",task:"基礎 Base 配方定案",owner:"研發",dep:"T07",start:"2026-08-08",end:"2026-08-28",durDays:21,status:"未開始",done:0,warn:"",note:""},
-    {id:"T11",phase:"P2 產品研發",task:"原物料供應商尋價／二供備援",owner:"採購",dep:null,start:"2026-08-15",end:"2026-09-28",durDays:45,status:"卡關",done:0.2,warn:"⚠ 卡關",note:"開心果醬超預算"},
-    {id:"T13",phase:"P3 生產設備",task:"設備規格盤點與詢價",owner:"Robert",dep:null,start:"2026-08-01",end:"2026-08-14",durDays:14,status:"進行中",done:0.3,warn:"",note:""},
-    {id:"T14",phase:"P3 生產設備",task:"設備下訂（進口交期90天）★關鍵路徑",owner:"採購",dep:"T13",start:"2026-08-15",end:"2026-11-12",durDays:90,status:"未開始",done:0,warn:"",note:""},
-    {id:"T17",phase:"P3 生產設備",task:"設備進場安裝與試機",owner:"工務",dep:"T14",start:"2026-11-13",end:"2026-11-22",durDays:10,status:"未開始",done:0,warn:"",note:""},
-    {id:"T23",phase:"P4 營運行銷",task:"前台動線壓力測試／試營運",owner:"營運",dep:"T17",start:"2026-11-23",end:"2026-12-02",durDays:10,status:"未開始",done:0,warn:"",note:""},
-    {id:"T26",phase:"P4 營運行銷",task:"正式開幕",owner:"全體",dep:"T23",start:"2027-01-08",end:"2027-01-08",durDays:1,status:"未開始",done:0,warn:"",note:"12月試營運緩衝"}
+    {id:"T01",phase:"P0 前期定位",task:"品牌核心定位與故事論述",owner:"Robert",dep:null,planStart:"2026-08-01",start:"2026-08-01",end:"2026-08-14",durDays:14,status:"已完成",done:1,warn:"",note:""},
+    {id:"T02",phase:"P0 前期定位",task:"商圈評估與店址簽約",owner:"Robert",dep:null,planStart:"2026-08-01",start:"2026-08-01",end:"2026-08-30",durDays:30,status:"進行中",done:0.5,warn:"",note:""},
+    {id:"T03",phase:"P1 品牌視覺",task:"Logo／標準字／品牌色票定案",owner:"設計",dep:"T01",planStart:"2026-08-15",start:"2026-08-15",end:"2026-09-04",durDays:21,status:"未開始",done:0,warn:"",note:""},
+    {id:"T07",phase:"P2 產品研發",task:"配方資料庫與成本系統建置",owner:"Robert",dep:null,planStart:"2026-08-01",start:"2026-08-01",end:"2026-08-07",durDays:7,status:"進行中",done:0.6,warn:"",note:"M1 已交付"},
+    {id:"T11",phase:"P2 產品研發",task:"原物料供應商尋價／二供備援",owner:"採購",dep:null,planStart:"2026-08-15",start:"2026-08-15",end:"2026-09-28",durDays:45,status:"卡關",done:0.2,warn:"⚠ 卡關",note:"開心果醬超預算"},
+    {id:"T13",phase:"P3 生產設備",task:"設備規格盤點與詢價",owner:"Robert",dep:null,planStart:"2026-08-01",start:"2026-08-01",end:"2026-08-14",durDays:14,status:"進行中",done:0.3,warn:"",note:""},
+    {id:"T14",phase:"P3 生產設備",task:"設備下訂（進口交期90天）★關鍵路徑",owner:"採購",dep:"T13",planStart:"2026-08-15",start:"2026-08-15",end:"2026-11-12",durDays:90,status:"未開始",done:0,warn:"",note:""},
+    {id:"T17",phase:"P3 生產設備",task:"設備進場安裝與試機",owner:"工務",dep:"T14",planStart:"2026-11-13",start:"2026-11-13",end:"2026-11-22",durDays:10,status:"未開始",done:0,warn:"",note:""},
+    {id:"T23",phase:"P4 營運行銷",task:"前台動線壓力測試／試營運",owner:"營運",dep:"T17",planStart:"2026-11-23",start:"2026-11-23",end:"2026-12-02",durDays:10,status:"未開始",done:0,warn:"",note:""},
+    {id:"T26",phase:"P4 營運行銷",task:"正式開幕",owner:"全體",dep:"T23",planStart:"2027-01-08",start:"2027-01-08",end:"2027-01-08",durDays:1,status:"未開始",done:0,warn:"",note:"12月試營運緩衝"}
   ],
-  costcard:{version:"PIS-v2",flavor:"西西里開心果",type:"乳基",yieldRate:0.92,overrun:0.30,density:1.08,displayLoss:0.05,finishedPerG:0.4195,solids:0.3845,sugar:0.1800,fat:0.1164,verdicts:["✓ 平衡","✓ 平衡","✓ 平衡"]},
+  rm:[
+    {id:"RM-001",category:"乳製品",name:"全脂鮮乳",supplier:"光泉/福樂",spec:"936ml×1瓶",price:82,netG:964,loss:0.01,solids:0.125,sugar:0.048,fat:0.036,note:""},
+    {id:"RM-002",category:"乳製品",name:"動物性鮮奶油35%",supplier:"總統牌",spec:"1L",price:285,netG:1005,loss:0.02,solids:0.415,sugar:0.03,fat:0.35,note:""},
+    {id:"RM-003",category:"乳製品",name:"脫脂奶粉",supplier:"紐西蘭",spec:"1kg",price:235,netG:1000,loss:0,solids:0.96,sugar:0.52,fat:0.01,note:""},
+    {id:"RM-004",category:"糖類",name:"細砂糖",supplier:"台糖",spec:"1kg",price:36,netG:1000,loss:0,solids:1,sugar:1,fat:0,note:""},
+    {id:"RM-005",category:"糖類",name:"葡萄糖粉",supplier:"食品原料行",spec:"1kg",price:95,netG:1000,loss:0,solids:0.95,sugar:0.95,fat:0,note:""},
+    {id:"RM-006",category:"糖類",name:"海藻糖",supplier:"食品原料行",spec:"1kg",price:165,netG:1000,loss:0,solids:1,sugar:1,fat:0,note:""},
+    {id:"RM-007",category:"穩定乳化",name:"冰淇淋複合穩定劑",supplier:"進口",spec:"1kg",price:680,netG:1000,loss:0,solids:1,sugar:0,fat:0,note:""},
+    {id:"RM-008",category:"風味原料",name:"西西里開心果醬(100%)",supplier:"進口",spec:"1kg",price:2600,netG:1000,loss:0.01,solids:0.97,sugar:0.05,fat:0.55,note:"堅果過敏原｜二供尋價中"},
+    {id:"RM-009",category:"風味原料",name:"法芙娜可可粉",supplier:"進口",spec:"1kg",price:520,netG:1000,loss:0,solids:0.95,sugar:0.01,fat:0.21,note:""},
+    {id:"RM-010",category:"風味原料",name:"馬達加斯加香草莢醬",supplier:"進口",spec:"500g",price:1900,netG:500,loss:0,solids:0.6,sugar:0.3,fat:0,note:""},
+    {id:"RM-011",category:"水果",name:"大湖草莓",supplier:"產地直送",spec:"1kg",price:250,netG:1000,loss:0.12,solids:0.1,sugar:0.075,fat:0.003,note:"季節：11–4月"},
+    {id:"RM-012",category:"水果",name:"愛文芒果",supplier:"產地直送",spec:"1kg",price:95,netG:1000,loss:0.28,solids:0.18,sugar:0.14,fat:0.004,note:"季節：5–9月"},
+    {id:"RM-013",category:"水果",name:"檸檬原汁",supplier:"四季",spec:"950ml",price:160,netG:980,loss:0,solids:0.085,sugar:0.025,fat:0,note:""},
+    {id:"RM-014",category:"基礎",name:"RO飲用水",supplier:"自製",spec:"1L",price:0.1,netG:1000,loss:0,solids:0,sugar:0,fat:0,note:"雪酪用"},
+    {id:"RM-101",category:"包材",name:"單球紙杯120ml(品牌印刷)",supplier:"包材廠",spec:"個",price:2.6,netG:1,loss:0,solids:null,sugar:null,fat:null,note:""},
+    {id:"RM-102",category:"包材",name:"雙球紙杯260ml",supplier:"包材廠",spec:"個",price:3.4,netG:1,loss:0,solids:null,sugar:null,fat:null,note:""},
+    {id:"RM-103",category:"包材",name:"三球紙杯360ml",supplier:"包材廠",spec:"個",price:4.2,netG:1,loss:0,solids:null,sugar:null,fat:null,note:""},
+    {id:"RM-104",category:"包材",name:"外帶盒500ml(含蓋)",supplier:"包材廠",spec:"個",price:9.8,netG:1,loss:0,solids:null,sugar:null,fat:null,note:""},
+    {id:"RM-105",category:"包材",name:"環保挖匙",supplier:"包材廠",spec:"個",price:0.9,netG:1,loss:0,solids:null,sugar:null,fat:null,note:""},
+    {id:"RM-106",category:"包材",name:"紙巾",supplier:"包材廠",spec:"個",price:0.35,netG:1,loss:0,solids:null,sugar:null,fat:null,note:""},
+    {id:"RM-107",category:"包材",name:"品牌貼紙",supplier:"包材廠",spec:"個",price:0.6,netG:1,loss:0,solids:null,sugar:null,fat:null,note:""},
+    {id:"RM-108",category:"包材",name:"保冷袋",supplier:"包材廠",spec:"個",price:7.5,netG:1,loss:0,solids:null,sugar:null,fat:null,note:""},
+    {id:"RM-109",category:"包材",name:"食品級乾冰(每次外帶攤提)",supplier:"包材廠",spec:"次",price:12,netG:1,loss:0,solids:null,sugar:null,fat:null,note:""},
+    {id:"RM-110",category:"包材",name:"提袋",supplier:"包材廠",spec:"個",price:3.5,netG:1,loss:0,solids:null,sugar:null,fat:null,note:""}
+  ],
   recipes:[
-    {version:"BASE-v1",flavor:"經典白基底",type:"乳基",status:"定案",grams:1000,mixCostPerKg:122.0,finishedPerG:0.1396,solids:0.360,sugar:0.226,fat:0.079,judgeSolids:"平衡",judgeSugar:"平衡",judgeFat:"平衡"},
-    {version:"PIS-v1",flavor:"西西里開心果",type:"乳基",status:"封存",grams:999.7,mixCostPerKg:365.6,finishedPerG:0.4183,solids:0.411,sugar:0.209,fat:0.115,judgeSolids:"平衡",judgeSugar:"平衡",judgeFat:"平衡"},
-    {version:"PIS-v2",flavor:"西西里開心果",type:"乳基",status:"定案",grams:999.7,mixCostPerKg:366.6,finishedPerG:0.4195,solids:0.384,sugar:0.180,fat:0.116,judgeSolids:"平衡",judgeSugar:"平衡",judgeFat:"平衡"},
-    {version:"VAN-v1",flavor:"馬達加斯加香草",type:"乳基",status:"測試中",grams:1002,mixCostPerKg:167.7,finishedPerG:0.1919,solids:0.362,sugar:0.224,fat:0.080,judgeSolids:"平衡",judgeSugar:"平衡",judgeFat:"平衡"},
-    {version:"CHO-v1",flavor:"特濃可可",type:"乳基",status:"測試中",grams:1000,mixCostPerKg:139.2,finishedPerG:0.1593,solids:0.414,sugar:0.241,fat:0.073,judgeSolids:"平衡",judgeSugar:"偏高",judgeFat:"平衡"},
-    {version:"STR-v1",flavor:"大湖草莓雪酪",type:"雪酪",status:"測試中",grams:1000,mixCostPerKg:179.5,finishedPerG:0.2054,solids:0.318,sugar:0.299,fat:0.002,judgeSolids:"平衡",judgeSugar:"平衡",judgeFat:"平衡"},
-    {version:"MGO-v1",flavor:"愛文芒果雪酪",type:"雪酪",status:"測試中",grams:1000,mixCostPerKg:88.3,finishedPerG:0.1010,solids:0.329,sugar:0.303,fat:0.002,judgeSolids:"平衡",judgeSugar:"平衡",judgeFat:"平衡"}
+    {version:"BASE-v1",flavor:"經典白基底",type:"乳基",status:"定案",note:"初版定案",items:[{rm:"RM-001",grams:620},{rm:"RM-002",grams:160},{rm:"RM-003",grams:45},{rm:"RM-004",grams:130},{rm:"RM-005",grams:40},{rm:"RM-007",grams:5}]},
+    {version:"PIS-v1",flavor:"西西里開心果",type:"乳基",status:"封存",note:"初版",items:[{rm:"RM-001",grams:592.2},{rm:"RM-002",grams:110},{rm:"RM-003",grams:40},{rm:"RM-004",grams:117},{rm:"RM-005",grams:36},{rm:"RM-007",grams:4.5},{rm:"RM-008",grams:100}]},
+    {version:"PIS-v2",flavor:"西西里開心果",type:"乳基",status:"定案",note:"甜度下修兩成",items:[{rm:"RM-001",grams:622.8},{rm:"RM-002",grams:110},{rm:"RM-003",grams:40},{rm:"RM-004",grams:93.6},{rm:"RM-005",grams:28.8},{rm:"RM-007",grams:4.5},{rm:"RM-008",grams:100}]},
+    {version:"VAN-v1",flavor:"馬達加斯加香草",type:"乳基",status:"測試中",note:"",items:[{rm:"RM-001",grams:610},{rm:"RM-002",grams:165},{rm:"RM-003",grams:45},{rm:"RM-004",grams:125},{rm:"RM-005",grams:40},{rm:"RM-007",grams:5},{rm:"RM-010",grams:12}]},
+    {version:"CHO-v1",flavor:"特濃可可",type:"乳基",status:"測試中",note:"糖度偏高待下修",items:[{rm:"RM-001",grams:595},{rm:"RM-002",grams:100},{rm:"RM-003",grams:30},{rm:"RM-004",grams:150},{rm:"RM-005",grams:45},{rm:"RM-007",grams:5},{rm:"RM-009",grams:75}]},
+    {version:"STR-v1",flavor:"大湖草莓雪酪",type:"雪酪",status:"測試中",note:"",items:[{rm:"RM-011",grams:550},{rm:"RM-004",grams:175},{rm:"RM-005",grams:55},{rm:"RM-006",grams:30},{rm:"RM-013",grams:25},{rm:"RM-007",grams:4},{rm:"RM-014",grams:161}]},
+    {version:"MGO-v1",flavor:"愛文芒果雪酪",type:"雪酪",status:"測試中",note:"",items:[{rm:"RM-012",grams:500},{rm:"RM-004",grams:160},{rm:"RM-005",grams:50},{rm:"RM-006",grams:25},{rm:"RM-013",grams:30},{rm:"RM-007",grams:4},{rm:"RM-014",grams:231}]}
+  ],
+  costcard:{version:"PIS-v2",flavor:"西西里開心果",type:"乳基",yieldRate:0.92,overrun:0.30,density:1.08,displayLoss:0.05,finishedPerG:null,solids:null,sugar:null,fat:null,verdicts:[]},
+  bom:[
+    {name:"內用/外帶 單球杯",grams:110,packCost:4.45},
+    {name:"內用/外帶 雙球杯",grams:150,packCost:5.25},
+    {name:"內用/外帶 三球杯",grams:240,packCost:6.05},
+    {name:"外帶盒 500ml",grams:450,packCost:35.9}
   ],
   pricing:{items:[
-    {name:"內用/外帶 單球杯",unitCost:50.60,price:150,costRate:0.3373,margin:99.40,marginRate:0.6627,dPrice:145,dFee:0.35,dNet:94.25,dMargin:43.65,dMarginRate:0.4631,share:0.15},
-    {name:"內用/外帶 雙球杯",unitCost:68.18,price:180,costRate:0.3788,margin:111.82,marginRate:0.6212,dPrice:210,dFee:0.35,dNet:136.50,dMargin:68.32,dMarginRate:0.5005,share:0.85}
-  ],weighted:{costRate:0.3725,avgPrice:175.5}},
+    {name:"內用/外帶 單球杯",price:150,targetRate:0.25,dPrice:145,dFee:0.35,share:0.15},
+    {name:"內用/外帶 雙球杯",price:180,targetRate:0.25,dPrice:210,dFee:0.35,share:0.85}
+  ],weighted:{}},
   pnl:{
+    editableKeys:["日均來客","平均客單價","月營業天數","外送營收佔比","外送平台平均抽成","食材＋包材成本率","月租金","正職人數","正職月薪","PT 月總時數","PT 時薪","水電瓦斯","行銷費率","雜支耗材","設備投資額","裝潢投資額","押金與開辦雜費","折舊攤提月數"],
+    calcKeys:["月人事費","月折舊","開辦投資合計"],
     params:{
       "日均來客":{con:150,base:200,opt:300},"平均客單價":{con:230,base:230,opt:230},"月營業天數":{con:30,base:30,opt:30},
       "外送營收佔比":{con:0.15,base:0.20,opt:0.25},"外送平台平均抽成":{con:0.35,base:0.35,opt:0.35},
       "食材＋包材成本率":{con:0.33,base:0.32,opt:0.30},"月租金":{con:75000,base:75000,opt:75000},
-      "月人事費":{con:176400,base:198400,opt:262400},"水電瓦斯":{con:35000,base:38000,opt:40000},
-      "行銷費率":{con:0.03,base:0.03,opt:0.03},"雜支耗材":{con:20000,base:20000,opt:20000},
-      "月折舊":{con:50000,base:50000,opt:50000},"開辦投資合計":{con:3500000,base:3500000,opt:3500000}
+      "正職人數":{con:2,base:2,opt:3},"正職月薪":{con:42000,base:42000,opt:42000},
+      "PT 月總時數":{con:420,base:520,opt:620},"PT 時薪":{con:220,base:220,opt:220},
+      "水電瓦斯":{con:35000,base:38000,opt:40000},"行銷費率":{con:0.03,base:0.03,opt:0.03},
+      "雜支耗材":{con:20000,base:20000,opt:20000},"設備投資額":{con:1500000,base:1500000,opt:1500000},
+      "裝潢投資額":{con:1500000,base:1500000,opt:1500000},"押金與開辦雜費":{con:500000,base:500000,opt:500000},
+      "折舊攤提月數":{con:60,base:60,opt:60}
     },
-    result:{
-      revenue:{con:1035000,base:1380000,opt:2070000},
-      profit:{con:251662,base:419000,opt:758375},
-      profitRate:{con:0.2432,base:0.3036,opt:0.3664},
-      breakeven:{con:87.9,base:95.3,opt:111.3},
-      payback:{con:14,base:8,opt:5}
-    },
-    months:{
-      coef:[0.6,0.65,0.85,1,1.2,1.5,1.5,1.7,1.7,1.7,1,0.6],coefTotal:14.0,
-      revenue:[828000,897000,1173000,1380000,1656000,2070000,2070000,2346000,2346000,2346000,1380000,828000],revenueTotal:19320000,
-      profit:[98840,138860,298940,419000,579080,819200,819200,979280,979280,979280,419000,98840],profitTotal:6628800,
-      cum:[98840,237700,536640,955640,1534720,2353920,3173120,4152400,5131680,6110960,6529960,6628800]
-    }
+    months:{coef:[0.6,0.65,0.85,1,1.2,1.5,1.5,1.7,1.7,1.7,1,0.6]}
   }
 };
 
@@ -248,29 +308,22 @@ const $ = (s) => document.querySelector(s);
 const nt = new Intl.NumberFormat("zh-TW");
 const money = (v) => v == null ? "—" : nt.format(Math.round(v));
 const pct = (v, d=1) => v == null ? "—" : (v*100).toFixed(d) + "%";
-const costBadge = (v) => v == null ? "" : `<span class="badge ${v<=0.30?"b-ok":v<=0.35?"b-mid":"b-bad"}">${pct(v)}</span>`;
-const dCostBadge = (v) => { // 外送：以扣抽成後實收的成本率評帶（較寬）
-  if (v == null) return "";
-  const cr = 1 - v; // v=外送毛利率
-  return `<span class="badge ${cr<=0.40?"b-ok":cr<=0.50?"b-mid":"b-bad"}">${pct(v)}</span>`;
-};
-const statusChip = (s) => {
-  const cls = s==="已完成"?"s-done":s==="進行中"?"s-run":s==="卡關"?"s-stuck":"s-wait";
-  return `<span class="chip ${cls}">${s}</span>`;
-};
-const judgeBadge = (j) => !j ? "—" : j==="平衡" ? `<span class="badge b-ok">✓</span>` : `<span class="badge b-bad">⚠ ${j}</span>`;
+const esc = (s) => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const costBadge = (v) => v == null ? "—" : `<span class="badge ${v<=0.30?"b-ok":v<=0.35?"b-mid":"b-bad"}">${pct(v)}</span>`;
+const dCostBadge = (v) => { if (v == null) return "—"; const cr = 1 - v; return `<span class="badge ${cr<=0.40?"b-ok":cr<=0.50?"b-mid":"b-bad"}">${pct(v)}</span>`; };
+const statusChip = (s) => { const cls = s==="已完成"?"s-done":s==="進行中"?"s-run":s==="卡關"?"s-stuck":"s-wait"; return `<span class="chip ${cls}">${esc(s)}</span>`; };
+const judgeBadge = (j) => !j ? "—" : j==="平衡" ? `<span class="badge b-ok">✓</span>` : `<span class="badge b-bad">⚠${esc(j)}</span>`;
+function toast(msg, isErr) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.className = "on" + (isErr ? " err" : "");
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.className = "", 2600);
+}
 
 /* ================= API ================= */
 async function api(body) {
-  if (DEMO) {
-    if (body.action === "login") return { ok:true, token:"demo" };
-    return DEMO_DATA;
-  }
-  const res = await fetch(API_URL, {
-    method:"POST",
-    headers:{ "Content-Type":"text/plain;charset=utf-8" },
-    body: JSON.stringify(body)
-  });
+  const res = await fetch(API_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify(body) });
   return res.json();
 }
 
@@ -281,9 +334,12 @@ async function doLogin() {
   const pw = $("#pw").value;
   $("#loginMsg").textContent = "登入中…";
   try {
-    const r = await api({ action:"login", password:pw });
-    if (!r.ok) { $("#loginMsg").textContent = r.error==="bad_password" ? "密碼錯誤" : "登入失敗：" + (r.error||""); return; }
-    TOKEN = r.token; sessionStorage.setItem("gelato_token", TOKEN);
+    if (DEMO) { TOKEN = "demo"; }
+    else {
+      const r = await api({ action:"login", password:pw });
+      if (!r.ok) { $("#loginMsg").textContent = r.error==="bad_password" ? "密碼錯誤" : "登入失敗：" + (r.error||""); return; }
+      TOKEN = r.token; sessionStorage.setItem("gelato_token", TOKEN);
+    }
     $("#loginMsg").textContent = "";
     await loadData();
   } catch (e) { $("#loginMsg").textContent = "無法連線 API，請確認網址與網路"; }
@@ -291,15 +347,16 @@ async function doLogin() {
 
 async function loadData() {
   try {
-    const r = await api({ action:"data", token:TOKEN });
-    if (!r.ok) {
-      if (r.error === "unauthorized") {
-        sessionStorage.removeItem("gelato_token"); TOKEN = "";
-        showLogin("登入已逾時（token 約 6 小時過期），請重新登入");
-      } else showLogin("讀取失敗：" + (r.error||""));
-      return;
+    if (DEMO) { DATA = DEMO_DATA; demoRecalcAll(); }
+    else {
+      const r = await api({ action:"data", token:TOKEN });
+      if (!r.ok) {
+        if (r.error === "unauthorized") { sessionStorage.removeItem("gelato_token"); TOKEN=""; showLogin("登入已逾時（約 6 小時），請重新登入"); }
+        else showLogin("讀取失敗：" + (r.error||""));
+        return;
+      }
+      DATA = r;
     }
-    DATA = r;
     $("#login").style.display = "none";
     $("#app").hidden = false;
     $("#demoTag").innerHTML = DEMO ? '<span class="demo-tag">DEMO</span>' : "";
@@ -313,11 +370,215 @@ function showLogin(msg) {
   $("#loginMsg").textContent = msg || "";
 }
 
+/* ================= 寫入 ================= */
+async function saveOp(op, payload, successMsg) {
+  if (DEMO) {
+    try { applyDemoWrite(op, payload); demoRecalcAll(); renderAll(); toast((successMsg||"已儲存") + "（demo 本機模擬）"); return true; }
+    catch (e) { toast(String(e.message||e), true); return false; }
+  }
+  try {
+    const r = await api({ action:"write", op, payload, token:TOKEN });
+    if (!r.ok) {
+      if (r.error === "unauthorized") { showLogin("登入已逾時，請重新登入"); return false; }
+      toast("儲存失敗：" + (r.detail || r.error), true);
+      return false;
+    }
+    await loadData();
+    toast(successMsg || "已儲存，數字已重新計算");
+    return true;
+  } catch (e) { toast("無法連線 API", true); return false; }
+}
+
+/* ================= Demo 本機計算引擎（模擬 Sheet 公式） ================= */
+function demoRecalcAll() {
+  if (!DATA) return;
+  const rmMap = {};
+  DATA.rm.forEach(r => {
+    r.effPerG = (r.price != null && r.netG > 0) ? (r.price / r.netG) / (1 - (r.loss || 0)) : null;
+    rmMap[r.id] = r;
+  });
+  const cc = DATA.costcard;
+  DATA.recipes.forEach(x => {
+    let grams=0, cost=0, sol=0, sug=0, fat=0;
+    x.items.forEach(it => {
+      const rm = rmMap[it.rm]; if (!rm) return;
+      grams += it.grams;
+      cost += it.grams * (rm.effPerG || 0);
+      sol += it.grams * (rm.solids || 0);
+      sug += it.grams * (rm.sugar || 0);
+      fat += it.grams * (rm.fat || 0);
+      it.name = rm.name;
+    });
+    x.grams = grams;
+    x.mixCostPerKg = grams > 0 ? cost / grams * 1000 : null;
+    x.finishedPerG = grams > 0 ? (cost / grams) / (cc.yieldRate || .92) / (1 - (cc.displayLoss || .05)) : null;
+    x.solids = grams > 0 ? sol / grams : null;
+    x.sugar = grams > 0 ? sug / grams : null;
+    x.fat = grams > 0 ? fat / grams : null;
+    const lim = x.type === "雪酪" ? {s:[.28,.36],g:[.24,.32],f:[0,.03]} : {s:[.32,.42],g:[.16,.23],f:[.04,.12]};
+    const jd = (v,r) => v==null ? "" : v<r[0] ? "偏低" : v>r[1] ? "偏高" : "平衡";
+    x.judgeSolids = jd(x.solids, lim.s); x.judgeSugar = jd(x.sugar, lim.g); x.judgeFat = jd(x.fat, lim.f);
+  });
+  const sel = DATA.recipes.find(r => r.version === cc.version) || DATA.recipes[0];
+  if (sel) { cc.version = sel.version; cc.flavor = sel.flavor; cc.type = sel.type; cc.finishedPerG = sel.finishedPerG; cc.solids = sel.solids; cc.sugar = sel.sugar; cc.fat = sel.fat; }
+  DATA.bom.forEach(b => { b.iceCost = (cc.finishedPerG || 0) * b.grams; b.totalCost = b.iceCost + (b.packCost || 0); });
+  const bomMap = {}; DATA.bom.forEach(b => bomMap[b.name] = b);
+  let wc = 0, wp = 0, ws = 0;
+  DATA.pricing.items.forEach(i => {
+    const b = bomMap[i.name];
+    i.unitCost = b ? b.totalCost : i.unitCost;
+    i.costRate = i.price > 0 ? i.unitCost / i.price : null;
+    i.margin = i.price - i.unitCost;
+    i.marginRate = i.price > 0 ? i.margin / i.price : null;
+    i.suggestPrice = i.targetRate > 0 ? Math.ceil(i.unitCost / i.targetRate / 5) * 5 : null;
+    i.dNet = i.dPrice * (1 - i.dFee);
+    i.dMargin = i.dNet - i.unitCost;
+    i.dMarginRate = i.dNet > 0 ? i.dMargin / i.dNet : null;
+    wc += (i.costRate || 0) * (i.share || 0); wp += (i.price || 0) * (i.share || 0); ws += (i.share || 0);
+  });
+  DATA.pricing.weighted = { costRate: ws > 0 ? wc / ws : null, avgPrice: ws > 0 ? wp / ws : null };
+  const P = DATA.pnl.params, g = (k) => P[k] || {con:0,base:0,opt:0};
+  ["con","base","opt"].forEach(col => {
+    P["月人事費"] = P["月人事費"] || {};
+    P["月折舊"] = P["月折舊"] || {};
+    P["開辦投資合計"] = P["開辦投資合計"] || {};
+    P["月人事費"][col] = g("正職人數")[col] * g("正職月薪")[col] + g("PT 月總時數")[col] * g("PT 時薪")[col];
+    P["月折舊"][col] = (g("設備投資額")[col] + g("裝潢投資額")[col]) / (g("折舊攤提月數")[col] || 60);
+    P["開辦投資合計"][col] = g("設備投資額")[col] + g("裝潢投資額")[col] + g("押金與開辦雜費")[col];
+  });
+  const res = { revenue:{}, profit:{}, profitRate:{}, breakeven:{}, payback:{} };
+  ["con","base","opt"].forEach(col => {
+    const rev = g("日均來客")[col] * g("平均客單價")[col] * g("月營業天數")[col];
+    const fixed = P["月人事費"][col] + g("月租金")[col] + g("水電瓦斯")[col] + g("雜支耗材")[col] + P["月折舊"][col];
+    const profit = rev * (1 - g("食材＋包材成本率")[col] - g("行銷費率")[col]) - rev * g("外送營收佔比")[col] * g("外送平台平均抽成")[col] - fixed;
+    res.revenue[col] = rev; res.profit[col] = profit;
+    res.profitRate[col] = rev > 0 ? profit / rev : null;
+    const cm = g("平均客單價")[col] * (1 - g("食材＋包材成本率")[col] - g("行銷費率")[col] - g("外送營收佔比")[col] * g("外送平台平均抽成")[col]) * g("月營業天數")[col];
+    res.breakeven[col] = cm > 0 ? fixed / cm : null;
+    res.payback[col] = profit > 0 ? Math.round(P["開辦投資合計"][col] / profit) : null;
+  });
+  DATA.pnl.result = res;
+  const coef = DATA.pnl.months.coef;
+  const baseRev = res.revenue.base;
+  const fixedB = P["月人事費"].base + g("月租金").base + g("水電瓦斯").base + g("雜支耗材").base + P["月折舊"].base;
+  const mRev = coef.map(c => baseRev * c);
+  const mProfit = mRev.map(rv => rv * (1 - g("食材＋包材成本率").base - g("行銷費率").base) - rv * g("外送營收佔比").base * g("外送平台平均抽成").base - fixedB);
+  let acc = 0;
+  DATA.pnl.months = {
+    coef, coefTotal: coef.reduce((a,b)=>a+b,0),
+    revenue: mRev, revenueTotal: mRev.reduce((a,b)=>a+b,0),
+    profit: mProfit, profitTotal: mProfit.reduce((a,b)=>a+b,0),
+    cum: mProfit.map(v => acc += v)
+  };
+  const g2 = DATA.gantt;
+  g2.forEach(t => { if (!t.start) t.start = t.planStart; if (t.start && t.durDays && !t.end) { const d = new Date(t.start); d.setDate(d.getDate()+t.durDays-1); t.end = d.toISOString().slice(0,10); } });
+  DATA.kpi.alerts = g2.filter(t => t.status === "卡關" || t.warn).length;
+  DATA.kpi.approved = new Set(DATA.recipes.filter(r=>r.status==="定案").map(r=>r.version)).size;
+  DATA.kpi.testing = new Set(DATA.recipes.filter(r=>r.status==="測試中").map(r=>r.version)).size;
+  DATA.kpi.weightedCostRate = DATA.pricing.weighted.costRate;
+  DATA.kpi.baseMonthlyProfit = res.profit.base;
+}
+
+function applyDemoWrite(op, pl) {
+  const G = DATA.gantt, R = DATA.rm, C = DATA.recipes;
+  if (op === "task.update") {
+    const t = G.find(x => x.id === pl.id); if (!t) throw new Error("找不到任務");
+    const f = pl.fields;
+    ["task","owner","dep","status","note"].forEach(k => { if (k in f) t[k] = f[k]; });
+    if ("planStart" in f) { t.planStart = f.planStart; t.start = f.planStart; t.end = null; }
+    if ("durDays" in f) { t.durDays = Number(f.durDays); t.end = null; }
+    if ("done" in f) t.done = Number(f.done);
+    t.warn = t.status === "卡關" ? "⚠ 卡關" : "";
+  } else if (op === "task.add") {
+    const f = pl.fields;
+    const maxN = Math.max(0, ...G.map(t => Number((t.id.match(/^T(\d+)$/)||[])[1] || 0)));
+    G.push({ id:"T"+String(maxN+1).padStart(2,"0"), phase:f.phase, task:f.task, owner:f.owner||"", dep:f.dep||null,
+      planStart:f.planStart, start:f.planStart, end:null, durDays:Number(f.durDays)||7, status:f.status||"未開始", done:Number(f.done)||0,
+      warn:(f.status==="卡關")?"⚠ 卡關":"", note:f.note||"" });
+  } else if (op === "rm.update") {
+    const r = R.find(x => x.id === pl.id); if (!r) throw new Error("找不到原料");
+    Object.assign(r, pl.fields);
+  } else if (op === "rm.add") {
+    const f = pl.fields, isPack = f.category === "包材";
+    const ns = R.map(x => Number((x.id.match(/^RM-(\d+)$/)||[])[1] || 0)).filter(n => isPack ? n>=100 : n<100);
+    const id = "RM-" + String(Math.max(isPack?100:0, ...ns) + 1).padStart(3,"0");
+    R.push(Object.assign({ id, netG:isPack?1:1000, loss:0, solids:0, sugar:0, fat:0, note:"" }, f));
+  } else if (op === "recipe.addVersion") {
+    if (C.some(x => x.version === pl.version)) throw new Error("版本號已存在");
+    C.push({ version:pl.version, flavor:pl.flavor, type:pl.type, status:pl.status||"測試中", note:pl.note||"", items:pl.items.map(i=>({rm:i.rm,grams:Number(i.grams)})) });
+  } else if (op === "recipe.setStatus") {
+    const x = C.find(r => r.version === pl.version); if (!x) throw new Error("找不到版本");
+    x.status = pl.status;
+  } else if (op === "costcard.update") {
+    Object.assign(DATA.costcard, pl);
+  } else if (op === "bom.update") {
+    const b = DATA.bom.find(x => x.name === pl.name); if (!b) throw new Error("找不到售價單位");
+    if ("grams" in pl) b.grams = Number(pl.grams);
+  } else if (op === "pricing.update") {
+    const i = DATA.pricing.items.find(x => x.name === pl.name); if (!i) throw new Error("找不到品項");
+    Object.assign(i, pl.fields);
+  } else if (op === "pnl.param") {
+    const P = DATA.pnl.params;
+    const key = Object.keys(P).find(k => k.indexOf(pl.label) >= 0 || pl.label.indexOf(k) >= 0);
+    if (!key) throw new Error("找不到參數");
+    Object.assign(P[key], pl.values);
+  } else if (op === "pnl.coefs") {
+    DATA.pnl.months.coef = pl.coefs.map(Number);
+  } else throw new Error("未知操作");
+}
+
+/* ================= Modal ================= */
+function openModal(title, fields, initial, onSave, extraHtml) {
+  const box = $("#modalBox");
+  const rows = fields.map(f => {
+    const v = initial && initial[f.key] != null ? initial[f.key] : (f.def != null ? f.def : "");
+    if (f.type === "select") {
+      const opts = f.options.map(o => {
+        const val = typeof o === "object" ? o.v : o, txt = typeof o === "object" ? o.t : o;
+        return `<option value="${esc(val)}" ${String(val)===String(v)?"selected":""}>${esc(txt)}</option>`;
+      }).join("");
+      return `<div class="frow"><label>${esc(f.label)}</label><select data-k="${f.key}">${opts}</select></div>`;
+    }
+    const shown = f.type === "percent" && v !== "" ? Math.round(Number(v) * 10000) / 100 : v;
+    const t = f.type === "date" ? "date" : (f.type === "number" || f.type === "percent") ? "number" : "text";
+    return `<div class="frow"><label>${esc(f.label)}${f.type==="percent"?"（%）":""}</label><input data-k="${f.key}" type="${t}" step="${f.step||"any"}" value="${esc(shown)}" placeholder="${esc(f.placeholder||"")}"></div>`;
+  }).join("");
+  box.innerHTML = `<h3>${esc(title)}</h3>${rows}${extraHtml||""}
+    <div class="m-actions"><button class="btn-ghost" id="mCancel">取消</button><button class="btn" id="mSave">儲存</button></div>`;
+  $("#overlay").classList.add("on");
+  $("#mCancel").onclick = closeModal;
+  $("#mSave").onclick = async () => {
+    const vals = {};
+    let bad = null;
+    fields.forEach(f => {
+      const el = box.querySelector(`[data-k="${f.key}"]`);
+      let v = el.value;
+      if (f.type === "number" || f.type === "percent") {
+        if (v === "") { if (f.required) bad = f.label + " 必填"; vals[f.key] = null; return; }
+        let n = Number(v);
+        if (!isFinite(n)) { bad = f.label + " 需為數字"; return; }
+        if (f.type === "percent") n = n / 100;
+        vals[f.key] = n;
+      } else {
+        if (f.required && !v) bad = f.label + " 必填";
+        vals[f.key] = v;
+      }
+    });
+    if (bad) { toast(bad, true); return; }
+    $("#mSave").disabled = true;
+    const ok = await onSave(vals, box);
+    $("#mSave").disabled = false;
+    if (ok !== false) closeModal();
+  };
+}
+function closeModal() { $("#overlay").classList.remove("on"); $("#modalBox").innerHTML = ""; }
+$("#overlay").addEventListener("click", (e) => { if (e.target.id === "overlay") closeModal(); });
+
 /* ================= 渲染 ================= */
 function renderAll() {
   $("#updatedAt").textContent = DATA.meta?.generatedAt || "—";
   renderKpi(); renderInsights(); renderPhases(); renderAlertTasks();
-  renderGantt(); renderRecipes(); renderPricing(); renderPnl();
+  renderGantt(); renderRecipes(); renderRm(); renderPricing(); renderPnl();
 }
 
 function renderKpi() {
@@ -333,31 +594,30 @@ function renderKpi() {
 
 function renderInsights() {
   const out = [];
-  const g = DATA.gantt || [], k = DATA.kpi, pr = DATA.pricing, pn = DATA.pnl;
-  g.filter(t => t.warn).forEach(t => out.push({cls:"", txt:`<b>${t.id} ${t.task}</b>：${t.warn}${t.note?`（${t.note}）`:""} → 優先處理，這是目前的紅燈。`}));
+  const g = DATA.gantt || [], pr = DATA.pricing, pn = DATA.pnl;
+  g.filter(t => t.warn || t.status === "卡關").forEach(t => out.push({cls:"", txt:`<b>${esc(t.id)} ${esc(t.task)}</b>：${esc(t.warn||"⚠ 卡關")}${t.note?`（${esc(t.note)}）`:""} → 優先處理。`}));
   const sheetRate = pn?.params?.["食材＋包材成本率"]?.base, simRate = pr?.weighted?.costRate;
   if (sheetRate != null && simRate != null && Math.abs(sheetRate - simRate) > 0.01) {
     const rev = pn?.result?.revenue?.base || 0;
-    const diff = Math.round(rev * Math.abs(simRate - sheetRate));
-    out.push({cls:"info", txt:`定價頁加權成本率 <b>${pct(simRate)}</b> 與損益表輸入的 <b>${pct(sheetRate)}</b> 差 ${((simRate-sheetRate)*100).toFixed(1)} 個百分點（以目前成本卡口味計）≈ 月利差 <b>${money(diff)}</b> 元 → 請確認損益用哪個成本率、或把口味組合佔比調成實際菜單。`});
+    out.push({cls:"info", txt:`定價頁加權成本率 <b>${pct(simRate)}</b> 與損益表輸入的 <b>${pct(sheetRate)}</b> 差 ${((simRate-sheetRate)*100).toFixed(1)} 個百分點（以目前所選口味計）≈ 月利差 <b>${money(rev*Math.abs(simRate-sheetRate))}</b> 元 → 到「損益」把成本率調成實際口味組合值。`});
   }
   const ct = pn?.months?.coefTotal;
   if (ct != null && Math.abs(ct - 12) > 0.05) {
-    out.push({cls:"info", txt:`季節係數合計 <b>${ct.toFixed(1)}</b>（原設計＝12）：代表全年＝${ct.toFixed(1)} 個「基準月」當量，全年數字比 12×基準月高 ${(((ct/12)-1)*100).toFixed(0)}%。若是刻意樂觀請保留；若是誤植請把係數攤回合計 12。`});
+    out.push({cls:"info", txt:`季節係數合計 <b>${ct.toFixed(1)}</b>（原設計＝12）：全年＝${ct.toFixed(1)} 個基準月當量，比 12×基準月高 ${(((ct/12)-1)*100).toFixed(0)}%。刻意樂觀可保留；誤植請到「損益」調整。`});
   }
   const be = pn?.result?.breakeven?.base, cust = pn?.params?.["日均來客"]?.base;
-  if (be != null && cust != null) {
+  if (be != null && cust != null && be > 0) {
     const ratio = cust / be;
-    out.push({cls: ratio >= 1.5 ? "good" : ratio >= 1.1 ? "info" : "", txt:`損益兩平 <b>${be.toFixed(0)} 人/日</b>，基準假設 ${cust} 人 → 安全墊 <b>${ratio.toFixed(2)}×</b>${ratio<1.1?"（貼著兩平線，優先驗證商圈流量）":ratio<1.5?"（尚可，開幕前仍建議實測商圈流量）":"（充足，但仍以實測為準）"}。`});
+    out.push({cls: ratio >= 1.5 ? "good" : ratio >= 1.1 ? "info" : "", txt:`損益兩平 <b>${be.toFixed(0)} 人/日</b>，基準假設 ${cust} 人 → 安全墊 <b>${ratio.toFixed(2)}×</b>${ratio<1.1?"（貼著兩平線，優先驗證商圈流量）":ratio<1.5?"（尚可，仍建議實測商圈流量）":"（充足，以實測為準）"}。`});
   }
   (pr?.items||[]).filter(i => i.dMarginRate != null && i.dMarginRate < 0.45).forEach(i =>
-    out.push({cls:"info", txt:`外送「${i.name}」扣抽成後毛利率僅 <b>${pct(i.dMarginRate)}</b> → 檢視外送價differential或只上高毛利品項。`}));
+    out.push({cls:"info", txt:`外送「${esc(i.name)}」扣抽成後毛利率僅 <b>${pct(i.dMarginRate)}</b> → 檢視外送價差或只上高毛利品項。`}));
   $("#insights").innerHTML = out.length ? out.map(o=>`<li class="${o.cls}">${o.txt}</li>`).join("") : `<li class="good">目前無警示。</li>`;
 }
 
 function renderPhases() {
   const rows = (DATA.phases||[]).map(p => `
-    <tr><td>${p.phase}</td><td class="num">${p.tasks ?? "—"}</td>
+    <tr><td>${esc(p.phase)}</td><td class="num">${p.tasks ?? "—"}</td>
       <td style="width:45%"><div style="display:flex;align-items:center;gap:8px">
         <div class="pbar" style="flex:1"><i style="width:${Math.round((p.done||0)*100)}%"></i></div>
         <span style="font-size:12.5px;color:var(--grey)">${pct(p.done)}</span></div></td></tr>`).join("");
@@ -367,9 +627,12 @@ function renderPhases() {
 function renderAlertTasks() {
   const list = (DATA.gantt||[]).filter(t => t.warn || t.status === "卡關");
   $("#alertTasks").innerHTML = list.length
-    ? list.map(t=>`<li><b>${t.id}</b> ${t.task}｜${statusChip(t.status)} 完成 ${pct(t.done,0)}${t.note?`<div class="note">${t.note}</div>`:""}</li>`).join("")
+    ? list.map(t=>`<li><b>${esc(t.id)}</b> ${esc(t.task)}｜${statusChip(t.status)} 完成 ${pct(t.done,0)}${t.note?`<div class="note">${esc(t.note)}</div>`:""}</li>`).join("")
     : `<li class="good">沒有卡關或逾期的任務。</li>`;
 }
+
+const PHASES = ["P0 前期定位","P1 品牌視覺","P2 產品研發","P3 生產設備","P4 營運行銷"];
+const T_STATUS = ["未開始","進行中","已完成","卡關"];
 
 function renderGantt() {
   const g = DATA.gantt || [];
@@ -389,86 +652,306 @@ function renderGantt() {
       bar = `<div class="gwrap">${todayPct!=null?`<div class="gtoday" style="left:${todayPct}%"></div>`:""}<div class="gbar ${cls}" style="left:${l}%;width:${w}%"></div></div>`;
     }
     return `<tr>
-      <td style="white-space:nowrap"><b>${t.id}</b></td>
-      <td><span class="chip">${(t.phase||"").slice(0,2)}</span>${t.task}<div class="note">${t.owner||""}${t.dep?`｜前置 ${t.dep}`:""}${t.note?`｜${t.note}`:""}</div></td>
+      <td style="white-space:nowrap"><b>${esc(t.id)}</b></td>
+      <td><span class="chip">${esc((t.phase||"").slice(0,2))}</span>${esc(t.task)}<div class="note">${esc(t.owner||"")}${t.dep?`｜前置 ${esc(t.dep)}`:""}${t.note?`｜${esc(t.note)}`:""}</div></td>
       <td class="num" style="white-space:nowrap">${t.start||"—"}<br>${t.end||"—"}</td>
       <td>${statusChip(t.status)}</td>
       <td class="num">${pct(t.done,0)}</td>
-      <td>${bar}</td></tr>`;
+      <td>${bar}</td>
+      <td><button class="btn-mini" data-act="task.edit" data-id="${esc(t.id)}">編輯</button></td></tr>`;
   }).join("");
-  $("#ganttTbl").innerHTML = `<thead><tr><th>編號</th><th>任務</th><th class="num">起訖</th><th>狀態</th><th class="num">完成</th><th>時間軸</th></tr></thead><tbody>${rows}</tbody>`;
+  $("#ganttTbl").innerHTML = `<thead><tr><th>編號</th><th>任務</th><th class="num">起訖</th><th>狀態</th><th class="num">完成</th><th>時間軸</th><th></th></tr></thead><tbody>${rows}</tbody>`;
 }
 
 function renderRecipes() {
-  const rows = (DATA.recipes||[]).map(r => `
-    <tr><td><b>${r.version}</b></td><td>${r.flavor||""}</td><td>${r.type||""}</td>
-      <td>${statusChip(r.status||"—")}</td>
+  const rows = (DATA.recipes||[]).map(r => {
+    const opts = ["測試中","定案","封存"].map(s=>`<option ${s===r.status?"selected":""}>${s}</option>`).join("");
+    return `<tr><td><b>${esc(r.version)}</b></td><td>${esc(r.flavor||"")}</td><td>${esc(r.type||"")}</td>
+      <td><select data-chg="recipe.status" data-ver="${esc(r.version)}">${opts}</select></td>
       <td class="num">${r.mixCostPerKg==null?"—":nt.format(Math.round(r.mixCostPerKg))}</td>
       <td class="num">${r.finishedPerG==null?"—":r.finishedPerG.toFixed(3)}</td>
       <td class="num">${pct(r.solids)}</td><td class="num">${pct(r.sugar)}</td><td class="num">${pct(r.fat)}</td>
-      <td>${judgeBadge(r.judgeSolids)} ${judgeBadge(r.judgeSugar)} ${judgeBadge(r.judgeFat)}</td></tr>`).join("");
+      <td>${judgeBadge(r.judgeSolids)} ${judgeBadge(r.judgeSugar)} ${judgeBadge(r.judgeFat)}</td></tr>`;
+  }).join("");
   $("#recipeTbl").innerHTML = `<thead><tr><th>版本</th><th>口味</th><th>類型</th><th>狀態</th>
     <th class="num">Mix成本(元/kg)</th><th class="num">成品成本(元/g)</th>
     <th class="num">固形物</th><th class="num">糖度</th><th class="num">脂肪</th><th>平衡(固/糖/脂)</th></tr></thead><tbody>${rows}</tbody>`;
-  const cc = DATA.costcard;
-  $("#ccNote").textContent = cc ? `成本卡目前選擇：${cc.version}（${cc.flavor}）｜產出率 ${pct(cc.yieldRate,0)}｜Overrun ${pct(cc.overrun,0)}｜展售損耗 ${pct(cc.displayLoss,0)}｜成品每克 ${cc.finishedPerG?.toFixed(4)} 元` : "";
+  const cc = DATA.costcard || {};
+  const verOpts = (DATA.recipes||[]).map(r=>`<option ${r.version===cc.version?"selected":""}>${esc(r.version)}</option>`).join("");
+  $("#ccCard").innerHTML = `
+    <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end">
+      <div><div class="note">成本基準口味</div><select id="ccVer">${verOpts}</select></div>
+      <div><div class="note">製程產出率（%）</div><input id="ccYield" type="number" step="1" value="${Math.round((cc.yieldRate||0)*100)}" style="width:90px"></div>
+      <div><div class="note">Overrun（%）</div><input id="ccOverrun" type="number" step="1" value="${Math.round((cc.overrun||0)*100)}" style="width:90px"></div>
+      <div><div class="note">Mix 密度(g/ml)</div><input id="ccDensity" type="number" step="0.01" value="${cc.density??1.08}" style="width:90px"></div>
+      <div><div class="note">展售損耗（%）</div><input id="ccLoss" type="number" step="1" value="${Math.round((cc.displayLoss||0)*100)}" style="width:90px"></div>
+      <button class="btn" data-act="cc.save">儲存參數</button>
+    </div>
+    <p class="note">目前：${esc(cc.version||"—")}（${esc(cc.flavor||"—")}）｜成品每克 ${cc.finishedPerG!=null?cc.finishedPerG.toFixed(4):"—"} 元</p>`;
+}
+
+function renderRm() {
+  const rows = (DATA.rm||[]).map(r => `
+    <tr><td><b>${esc(r.id)}</b></td><td>${esc(r.category)}</td><td>${esc(r.name)}</td>
+      <td class="note">${esc(r.supplier||"")} ${esc(r.spec||"")}</td>
+      <td class="num">${r.price==null?"—":nt.format(r.price)}</td>
+      <td class="num">${r.netG==null?"—":nt.format(r.netG)}</td>
+      <td class="num">${pct(r.loss,0)}</td>
+      <td class="num">${r.effPerG==null?"—":r.effPerG.toFixed(4)}</td>
+      <td class="num">${r.solids==null?"—":pct(r.solids,0)}/${r.sugar==null?"—":pct(r.sugar,0)}/${r.fat==null?"—":pct(r.fat,0)}</td>
+      <td><button class="btn-mini" data-act="rm.edit" data-id="${esc(r.id)}">編輯</button></td></tr>`).join("");
+  $("#rmTbl").innerHTML = `<thead><tr><th>編號</th><th>類別</th><th>品名</th><th>供應商/規格</th>
+    <th class="num">進貨價</th><th class="num">淨含量(g)</th><th class="num">前處理損耗</th><th class="num">有效每克(元)</th><th class="num">固/糖/脂</th><th></th></tr></thead><tbody>${rows}</tbody>`;
 }
 
 function renderPricing() {
   const p = DATA.pricing || {items:[]};
   const rows = p.items.map(i => `
-    <tr><td><b>${i.name}</b></td>
+    <tr><td><b>${esc(i.name)}</b></td>
       <td class="num">${i.unitCost?.toFixed(1) ?? "—"}</td>
       <td class="num">${money(i.price)}</td>
       <td class="num">${costBadge(i.costRate)}</td>
       <td class="num">${pct(i.marginRate)}</td>
+      <td class="num">${money(i.suggestPrice)}</td>
       <td class="num">${money(i.dPrice)}</td>
       <td class="num">${i.dNet?.toFixed(0) ?? "—"}</td>
       <td class="num">${dCostBadge(i.dMarginRate)}</td>
-      <td class="num">${pct(i.share,0)}</td></tr>`).join("");
+      <td class="num">${pct(i.share,0)}</td>
+      <td><button class="btn-mini" data-act="price.edit" data-name="${esc(i.name)}">編輯</button></td></tr>`).join("");
   const w = p.weighted || {};
-  $("#priceTbl").innerHTML = `<thead><tr><th>品項</th><th class="num">變動成本</th><th class="num">店內售價</th><th class="num">店內成本率</th><th class="num">店內毛利率</th><th class="num">外送售價</th><th class="num">外送實收</th><th class="num">外送毛利率</th><th class="num">銷量佔比</th></tr></thead>
+  $("#priceTbl").innerHTML = `<thead><tr><th>品項</th><th class="num">變動成本</th><th class="num">店內售價</th><th class="num">成本率</th><th class="num">毛利率</th><th class="num">建議售價</th><th class="num">外送售價</th><th class="num">外送實收</th><th class="num">外送毛利率</th><th class="num">銷量佔比</th><th></th></tr></thead>
     <tbody>${rows}
     <tr><td colspan="3"><b>加權平均（依銷量佔比）</b></td><td class="num">${costBadge(w.costRate)}</td>
-    <td colspan="4" class="note">加權平均店內售價（客單價參考）</td><td class="num"><b>${w.avgPrice?.toFixed(1) ?? "—"}</b></td></tr></tbody>`;
+    <td colspan="5" class="note">加權平均店內售價（客單價參考）</td><td class="num"><b>${w.avgPrice?.toFixed(1) ?? "—"}</b></td><td></td></tr></tbody>`;
+  const bomRows = (DATA.bom||[]).map(b => `
+    <tr><td>${esc(b.name)}</td>
+      <td class="num"><input type="number" step="1" value="${b.grams??""}" data-bom="${esc(b.name)}"></td>
+      <td class="num">${b.iceCost!=null?b.iceCost.toFixed(1):"—"}</td>
+      <td class="num">${b.packCost!=null?b.packCost.toFixed(2):"—"}</td>
+      <td class="num"><b>${b.totalCost!=null?b.totalCost.toFixed(1):"—"}</b></td>
+      <td><button class="btn-mini" data-act="bom.save" data-name="${esc(b.name)}">儲存</button></td></tr>`).join("");
+  $("#bomTbl").innerHTML = `<thead><tr><th>售價單位</th><th class="num">冰體克數（可改）</th><th class="num">冰體成本</th><th class="num">包材成本</th><th class="num">總變動成本</th><th></th></tr></thead><tbody>${bomRows}</tbody>`;
 }
 
 function renderPnl() {
-  const r = DATA.pnl?.result, p = DATA.pnl?.params, m = DATA.pnl?.months;
-  if (!r) return;
-  const scen = [["保守","con"],["基準","base"],["樂觀","opt"]].map(([name,key]) => {
-    const prof = r.profit?.[key];
-    return `<div class="card"><h3>${name}</h3>
-      <div class="big ${prof>=0?"pos":"neg"}">${money(prof)} <span style="font-size:12px;color:var(--grey)">元/月</span></div>
-      <div class="row"><span>月營收</span><b>${money(r.revenue?.[key])}</b></div>
-      <div class="row"><span>營業利益率</span><b>${pct(r.profitRate?.[key])}</b></div>
-      <div class="row"><span>損益兩平日來客</span><b>${r.breakeven?.[key]?.toFixed(0) ?? "—"} 人</b></div>
-      <div class="row"><span>回本月數（開辦 ${money(p?.["開辦投資合計"]?.[key])}）</span><b>${r.payback?.[key] ?? "—"} 個月</b></div>
-      <div class="row"><span>日均來客假設</span><b>${p?.["日均來客"]?.[key] ?? "—"} 人 × ${money(p?.["平均客單價"]?.[key])} 元</b></div>
-    </div>`;
+  const pn = DATA.pnl; if (!pn) return;
+  const keys = pn.editableKeys || [];
+  const P = pn.params || {};
+  const isPct = (k) => ["外送營收佔比","外送平台平均抽成","食材＋包材成本率","行銷費率"].indexOf(k) >= 0;
+  const paramRows = keys.map(k => {
+    const v = P[k] || {};
+    const cell = (col) => {
+      const raw = v[col];
+      const shown = raw == null ? "" : isPct(k) ? Math.round(raw*10000)/100 : raw;
+      return `<td class="num"><input type="number" step="any" value="${shown}" data-pnl="${esc(k)}" data-col="${col}"></td>`;
+    };
+    return `<tr><td>${esc(k)}${isPct(k)?"（%）":""}</td>${cell("con")}${cell("base")}${cell("opt")}</tr>`;
   }).join("");
-  $("#scenRow").innerHTML = scen;
-  const mn = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
-  if (m) {
+  const calcRows = (pn.calcKeys||[]).map(k => {
+    const v = P[k] || {};
+    return `<tr><td class="note">${esc(k)}（自動）</td><td class="num note">${money(v.con)}</td><td class="num note">${money(v.base)}</td><td class="num note">${money(v.opt)}</td></tr>`;
+  }).join("");
+  $("#pnlParamTbl").innerHTML = `<thead><tr><th>參數</th><th class="num">保守</th><th class="num">基準</th><th class="num">樂觀</th></tr></thead><tbody>${paramRows}${calcRows}</tbody>`;
+  const r = pn.result, pp = P;
+  if (r) {
+    $("#scenRow").innerHTML = [["保守","con"],["基準","base"],["樂觀","opt"]].map(([name,key]) => {
+      const prof = r.profit?.[key];
+      return `<div class="card"><h3>${name}</h3>
+        <div class="big ${prof>=0?"pos":"neg"}">${money(prof)} <span style="font-size:12px;color:var(--grey)">元/月</span></div>
+        <div class="row"><span>月營收</span><b>${money(r.revenue?.[key])}</b></div>
+        <div class="row"><span>營業利益率</span><b>${pct(r.profitRate?.[key])}</b></div>
+        <div class="row"><span>損益兩平日來客</span><b>${r.breakeven?.[key]!=null?r.breakeven[key].toFixed(0):"—"} 人</b></div>
+        <div class="row"><span>回本月數（開辦 ${money(pp["開辦投資合計"]?.[key])}）</span><b>${r.payback?.[key] ?? "未回本"}</b></div>
+      </div>`;
+    }).join("");
+  }
+  const m = pn.months, mn = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
+  if (m && m.coef) {
+    $("#coefTbl").innerHTML = `<thead><tr><th>月份</th>${mn.map(x=>`<th class="num">${x}</th>`).join("")}<th class="num">合計</th></tr></thead>
+      <tbody><tr><td>季節係數</td>${m.coef.map((v,i)=>`<td class="num"><input type="number" step="0.05" value="${v??""}" data-coef="${i}"></td>`).join("")}
+      <td class="num"><b>${m.coefTotal!=null?m.coefTotal.toFixed(2):"—"}</b></td></tr></tbody>`;
+  }
+  if (m && m.profit) {
     const rows = `
-      <tr><td>季節係數</td>${m.coef.map(v=>`<td class="num">${v?.toFixed(2)??"—"}</td>`).join("")}<td class="num"><b>${m.coefTotal?.toFixed(1)??"—"}</b></td></tr>
       <tr><td>月營收</td>${m.revenue.map(v=>`<td class="num">${money(v)}</td>`).join("")}<td class="num"><b>${money(m.revenueTotal)}</b></td></tr>
       <tr><td>月營業利益</td>${m.profit.map(v=>`<td class="num" style="color:${v<0?"var(--bad)":"var(--ok)"};font-weight:600">${money(v)}</td>`).join("")}<td class="num"><b style="color:${(m.profitTotal||0)<0?"var(--bad)":"var(--ok)"}">${money(m.profitTotal)}</b></td></tr>
       <tr><td>累計</td>${m.cum.map(v=>`<td class="num">${money(v)}</td>`).join("")}<td></td></tr>`;
     $("#pnlTbl").innerHTML = `<thead><tr><th></th>${mn.map(x=>`<th class="num">${x}</th>`).join("")}<th class="num">全年</th></tr></thead><tbody>${rows}</tbody>`;
-    if (window.Chart) {
-      const ctx = document.getElementById("pnlChart");
-      if (window.__pnlChart) window.__pnlChart.destroy();
-      window.__pnlChart = new Chart(ctx, {
-        type:"bar",
-        data:{ labels:mn, datasets:[{ label:"月營業利益", data:m.profit,
-          backgroundColor:m.profit.map(v=>v<0?"#DC3545":"#28A745"), borderRadius:2 }]},
-        options:{ responsive:true, plugins:{ legend:{display:false},
-          tooltip:{ callbacks:{ label:(c)=>" "+nt.format(Math.round(c.raw))+" 元" } } },
-          scales:{ y:{ ticks:{ callback:(v)=>nt.format(v) }, grid:{color:"#F0F0F0"} }, x:{ grid:{display:false} } } }
-      });
-    }
+    drawChart(m, mn);
   }
+}
+
+function drawChart(m, mn) {
+  if (!window.Chart) return;
+  const ctx = document.getElementById("pnlChart");
+  if (window.__pnlChart) window.__pnlChart.destroy();
+  window.__pnlChart = new Chart(ctx, {
+    type:"bar",
+    data:{ labels:mn, datasets:[{ label:"月營業利益", data:m.profit,
+      backgroundColor:m.profit.map(v=>v<0?"#DC3545":"#28A745"), borderRadius:2 }]},
+    options:{ responsive:true, plugins:{ legend:{display:false},
+      tooltip:{ callbacks:{ label:(c)=>" "+nt.format(Math.round(c.raw))+" 元" } } },
+      scales:{ y:{ ticks:{ callback:(v)=>nt.format(v) }, grid:{color:"#F0F0F0"} }, x:{ grid:{display:false} } } }
+  });
+}
+
+/* ================= 編輯動作 ================= */
+function taskFields() {
+  return [
+    { key:"task", label:"任務名稱", type:"text", required:true },
+    { key:"phase", label:"階段", type:"select", options:PHASES },
+    { key:"owner", label:"負責人", type:"text" },
+    { key:"dep", label:"前置任務編號", type:"text", placeholder:"例：T03（需已存在）" },
+    { key:"planStart", label:"預定開始", type:"date" },
+    { key:"durDays", label:"工期（天）", type:"number", step:"1", required:true },
+    { key:"status", label:"狀態", type:"select", options:T_STATUS },
+    { key:"done", label:"完成", type:"percent", step:"5" },
+    { key:"note", label:"備註", type:"text" }
+  ];
+}
+
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest("[data-act]");
+  if (!btn) return;
+  const act = btn.dataset.act;
+  if (act === "task.new") {
+    openModal("新增任務", taskFields(), { durDays:7, done:0, status:"未開始", planStart:new Date().toISOString().slice(0,10) },
+      (v) => saveOp("task.add", { fields:v }, "任務已新增"));
+  } else if (act === "task.edit") {
+    const t = DATA.gantt.find(x => x.id === btn.dataset.id);
+    openModal("編輯任務 " + t.id, taskFields(), t, (v) => saveOp("task.update", { id:t.id, fields:v }, t.id + " 已更新"));
+  } else if (act === "rm.new") {
+    openModal("新增原料", [
+      { key:"category", label:"類別", type:"select", options:["乳製品","糖類","穩定乳化","風味原料","水果","基礎","包材"] },
+      { key:"name", label:"品名", type:"text", required:true },
+      { key:"supplier", label:"供應商", type:"text" },
+      { key:"spec", label:"進貨規格", type:"text", placeholder:"例：1kg／936ml×1瓶／個" },
+      { key:"price", label:"進貨價（元）", type:"number", required:true },
+      { key:"netG", label:"淨含量（g，包材填1）", type:"number", required:true },
+      { key:"loss", label:"前處理損耗", type:"percent" },
+      { key:"solids", label:"總固形物", type:"percent" },
+      { key:"sugar", label:"糖分", type:"percent" },
+      { key:"fat", label:"脂肪", type:"percent" },
+      { key:"note", label:"備註/過敏原", type:"text" }
+    ], { netG:1000, loss:0 }, (v) => saveOp("rm.add", { fields:v }, "原料已新增"));
+  } else if (act === "rm.edit") {
+    const r = DATA.rm.find(x => x.id === btn.dataset.id);
+    openModal("編輯 " + r.id + "｜" + r.name, [
+      { key:"name", label:"品名", type:"text", required:true },
+      { key:"supplier", label:"供應商", type:"text" },
+      { key:"spec", label:"進貨規格", type:"text" },
+      { key:"price", label:"進貨價（元）", type:"number", required:true },
+      { key:"netG", label:"淨含量（g）", type:"number", required:true },
+      { key:"loss", label:"前處理損耗", type:"percent" },
+      { key:"solids", label:"總固形物", type:"percent" },
+      { key:"sugar", label:"糖分", type:"percent" },
+      { key:"fat", label:"脂肪", type:"percent" },
+      { key:"note", label:"備註", type:"text" }
+    ], r, (v) => saveOp("rm.update", { id:r.id, fields:v }, r.name + " 已更新，全部成本已重算"));
+  } else if (act === "recipe.new") {
+    modalRecipeAdd();
+  } else if (act === "cc.save") {
+    const pl = {
+      version: $("#ccVer").value,
+      yieldRate: Number($("#ccYield").value)/100,
+      overrun: Number($("#ccOverrun").value)/100,
+      density: Number($("#ccDensity").value),
+      displayLoss: Number($("#ccLoss").value)/100
+    };
+    saveOp("costcard.update", pl, "製程參數已更新");
+  } else if (act === "price.edit") {
+    const i = DATA.pricing.items.find(x => x.name === btn.dataset.name);
+    openModal("編輯定價｜" + i.name, [
+      { key:"price", label:"店內售價（元）", type:"number", required:true },
+      { key:"targetRate", label:"目標成本率", type:"percent" },
+      { key:"dPrice", label:"外送售價（元）", type:"number" },
+      { key:"dFee", label:"平台抽成", type:"percent" },
+      { key:"share", label:"銷量佔比", type:"percent" }
+    ], i, (v) => saveOp("pricing.update", { name:i.name, fields:v }, "定價已更新"));
+  } else if (act === "bom.save") {
+    const name = btn.dataset.name;
+    const inp = document.querySelector(`input[data-bom="${CSS.escape(name)}"]`);
+    saveOp("bom.update", { name, grams:Number(inp.value) }, "冰體克數已更新");
+  } else if (act === "pnl.save") {
+    await savePnlParams();
+  } else if (act === "coef.save") {
+    const coefs = [...document.querySelectorAll("input[data-coef]")].map(i => Number(i.value));
+    if (coefs.some(c => !isFinite(c))) { toast("係數需為數字", true); return; }
+    saveOp("pnl.coefs", { coefs }, "季節係數已更新");
+  }
+});
+
+document.addEventListener("change", (e) => {
+  const el = e.target.closest("[data-chg]");
+  if (!el) return;
+  if (el.dataset.chg === "recipe.status") {
+    saveOp("recipe.setStatus", { version:el.dataset.ver, status:el.value }, el.dataset.ver + " 狀態已更新");
+  }
+});
+
+async function savePnlParams() {
+  const isPct = (k) => ["外送營收佔比","外送平台平均抽成","食材＋包材成本率","行銷費率"].indexOf(k) >= 0;
+  const dirty = {};
+  document.querySelectorAll("input[data-pnl]").forEach(inp => {
+    const k = inp.dataset.pnl, col = inp.dataset.col;
+    let v = Number(inp.value);
+    if (!isFinite(v)) return;
+    if (isPct(k)) v = v / 100;
+    const cur = DATA.pnl.params[k]?.[col];
+    if (cur == null || Math.abs(cur - v) > 1e-9) {
+      dirty[k] = dirty[k] || {};
+      dirty[k][col] = v;
+    }
+  });
+  const keys = Object.keys(dirty);
+  if (!keys.length) { toast("沒有變更"); return; }
+  if (DEMO) {
+    keys.forEach(k => applyDemoWrite("pnl.param", { label:k, values:dirty[k] }));
+    demoRecalcAll(); renderAll();
+    toast(`已更新 ${keys.length} 項參數（demo 本機模擬）`);
+    return;
+  }
+  for (const k of keys) {
+    const r = await api({ action:"write", op:"pnl.param", payload:{ label:k, values:dirty[k] }, token:TOKEN });
+    if (!r.ok) { toast(`「${k}」儲存失敗：` + (r.detail||r.error), true); return; }
+  }
+  await loadData();
+  toast(`已更新 ${keys.length} 項參數，損益已重算`);
+}
+
+function modalRecipeAdd() {
+  const rmOpts = DATA.rm.filter(r => r.category !== "包材").map(r => `<option value="${esc(r.id)}">${esc(r.id)}｜${esc(r.name)}</option>`).join("");
+  const ingRow = () => `<div class="ing-row"><select class="ing-rm">${rmOpts}</select><input class="ing-g" type="number" step="0.1" placeholder="克數"><button class="btn-mini ing-del" type="button">✕</button></div>`;
+  const extra = `<div style="margin:6px 0 4px;font-size:13px;color:var(--grey)">原料明細（總量建議 1000g 左右）</div>
+    <div id="ingList">${ingRow()}${ingRow()}${ingRow()}</div>
+    <button class="btn-mini" type="button" id="ingAdd">＋ 加一項原料</button>
+    <div class="note" id="ingSum"></div>`;
+  openModal("新增配方版本", [
+    { key:"version", label:"版本號", type:"text", required:true, placeholder:"例：LYC-v1（口味代碼-v版次）" },
+    { key:"flavor", label:"口味名稱", type:"text", required:true },
+    { key:"type", label:"產品類型", type:"select", options:["乳基","雪酪"] },
+    { key:"status", label:"狀態", type:"select", options:["測試中","定案"] },
+    { key:"note", label:"變更說明", type:"text", placeholder:"例：初版／甜度下修兩成" }
+  ], {}, async (v, box) => {
+    const items = [...box.querySelectorAll(".ing-row")].map(row => ({
+      rm: row.querySelector(".ing-rm").value,
+      grams: Number(row.querySelector(".ing-g").value)
+    })).filter(i => i.grams > 0);
+    if (!items.length) { toast("至少填一項原料用量", true); return false; }
+    const seen = new Set();
+    for (const i of items) { if (seen.has(i.rm)) { toast("原料重複：" + i.rm, true); return false; } seen.add(i.rm); }
+    return saveOp("recipe.addVersion", Object.assign({}, v, { items }), v.version + " 已建立");
+  }, extra);
+  const upd = () => {
+    const s = [...document.querySelectorAll("#ingList .ing-g")].reduce((a,i)=>a+(Number(i.value)||0),0);
+    $("#ingSum").textContent = "目前總量：" + s.toFixed(1) + " g";
+  };
+  $("#modalBox").addEventListener("input", upd);
+  $("#modalBox").addEventListener("click", (e) => {
+    if (e.target.id === "ingAdd") { $("#ingList").insertAdjacentHTML("beforeend", ingRow()); }
+    if (e.target.classList.contains("ing-del")) { e.target.closest(".ing-row").remove(); upd(); }
+  });
+  upd();
 }
 
 /* ================= 事件 ================= */
@@ -486,8 +969,7 @@ $("#btnLogout").addEventListener("click", () => { sessionStorage.removeItem("gel
 /* ================= 啟動 ================= */
 if (DEMO) { TOKEN = "demo"; loadData(); }
 else if (TOKEN) { loadData(); }
-window.addEventListener("load", () => { if (window.Chart && DATA && !window.__pnlChart) renderPnl(); }); // Chart.js defer 載入完成後補畫圖表
-
+window.addEventListener("load", () => { if (window.Chart && DATA && !window.__pnlChart) renderPnl(); });
 </script>
 </body>
 </html>
