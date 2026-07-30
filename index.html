@@ -116,9 +116,15 @@ td select{padding:4px 6px;font-size:13px}
 .g-lbl{position:sticky;left:0;z-index:6;flex:0 0 190px;width:190px;background:#fff;border-right:1px solid var(--line);padding:0 10px;display:flex;align-items:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .g-head .g-lbl{font-weight:700;color:var(--grey)}
 .g-row:nth-child(odd):not(.g-head) .g-lbl{background:#FAFAFA}
-.g-tl{position:relative;flex:0 0 auto}
-.g-row:nth-child(odd):not(.g-head) .g-tl{background-color:#FBFAF7}
-.g-week{position:absolute;top:0;height:100%;display:flex;align-items:center;justify-content:center;font-size:10.5px;color:var(--grey);border-left:1px solid #F0EDE6}
+.g-tl{position:relative;z-index:1;flex:0 0 auto}
+.g-week{position:absolute;top:0;height:100%;display:flex;align-items:center;justify-content:center;font-size:10.5px;color:var(--grey);cursor:pointer;user-select:none}
+.g-week:hover{background:#F3F7EF;color:var(--green)}
+.g-day{flex-direction:column;justify-content:center;line-height:1.15;font-size:9.5px;background:#F6F9F2}
+.g-day .wd{font-size:8.5px;color:#A8B396}
+.g-gridlay{position:absolute;top:0;bottom:0;z-index:0;pointer-events:none}
+.gl-w{position:absolute;top:0;bottom:0;width:1px;background:#E3DED2}
+.gl-d{position:absolute;top:34px;bottom:0;width:1px;background:#F1EEE7}
+.gl-we{position:absolute;top:34px;bottom:0;background:rgba(141,184,122,.08)}
 .g-bar{position:absolute;top:7px;height:16px;border-radius:3px;overflow:hidden}
 .g-bar i{display:block;height:100%;background:rgba(45,80,22,.38)}
 .g-bar.run{background:#8DB87A}
@@ -204,9 +210,9 @@ td select{padding:4px 6px;font-size:13px}
       <p class="note">日常作業（任務、配方、原料、定價、損益參數）都在各分頁直接編輯；試算表僅作為資料庫，不需開啟。誤改可用 Google Sheets「版本記錄」還原。</p>
     </section>
     <section id="sec-gantt">
-      <div class="bar"><h2>專案甘特<span class="hint">點色條或任務列＝就地看內容；紅線＝今天</span></h2><span class="sp"></span><button class="btn" data-act="task.new">＋ 新增任務</button></div>
+      <div class="bar"><h2>專案甘特<span class="hint">點週表頭＝展開成單日；點色條或任務列＝就地看內容</span></h2><span class="sp"></span><button class="btn-ghost" data-act="gantt.collapse">收合全部週</button><button class="btn" data-act="task.new">＋ 新增任務</button></div>
       <div class="t-scroll" id="ganttChart" style="margin-bottom:8px;background:#fff;border:1px solid var(--line);border-radius:6px"></div>
-      <p class="note">圖例：<span class="chip s-done">已完成</span><span class="chip s-run">進行中</span><span class="chip" style="background:#E8EFDF;color:#6d7f5c">未開始</span><span class="chip s-stuck">卡關</span>｜色條內深色＝完成進度｜前置延期，後續自動後推。</p>
+      <p class="note">圖例：<span class="chip s-done">已完成</span><span class="chip s-run">進行中</span><span class="chip" style="background:#E8EFDF;color:#6d7f5c">未開始</span><span class="chip s-stuck">卡關</span>｜色條內深色＝完成進度｜紅線＝今天｜點週表頭展開該週為 7 天（可同時展開多週，再點一次收合），綠底直欄＝週末。</p>
       <h2>任務清單</h2>
       <div class="t-scroll"><table id="ganttTbl"></table></div>
     </section>
@@ -667,21 +673,38 @@ function renderAlertTasks() {
 const PHASES = ["P0 前期定位","P1 品牌視覺","P2 產品研發","P3 生產設備","P4 營運行銷"];
 const T_STATUS = ["未開始","進行中","已完成","卡關"];
 
+let expandedWeeks = new Set();
 function renderGanttChart() {
   const box = $("#ganttChart");
   const g = DATA.gantt || [];
   const ds = g.filter(t => t.start && t.end);
   if (!ds.length) { box.innerHTML = ""; return; }
-  const DAY = 86400000, COL = 46;
+  const DAY = 86400000, COL = 46, DCOL = 42;
+  const WD = ["一","二","三","四","五","六","日"];
   const monday = (ts) => { const d = new Date(ts); const wd = (d.getUTCDay() + 6) % 7; return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - wd); };
   const min = monday(Math.min(...ds.map(t => +new Date(t.start))));
-  const end = monday(Math.max(...ds.map(t => +new Date(t.end)))) + 7 * DAY;
-  const weeks = [];
-  for (let w = min; w < end; w += 7 * DAY) weeks.push(w);
-  const width = weeks.length * COL;
-  const px = (ts) => (ts - min) / DAY * (COL / 7);
-  const weekCells = weeks.map((w, i) => { const d = new Date(w); return `<div class="g-week" style="left:${i*COL}px;width:${COL}px">${d.getUTCMonth()+1}/${d.getUTCDate()}</div>`; }).join("");
-  const grid = `background-image:repeating-linear-gradient(90deg,#F0EDE6 0,#F0EDE6 1px,transparent 1px,transparent ${COL}px)`;
+  const endTs = monday(Math.max(...ds.map(t => +new Date(t.end)))) + 7 * DAY;
+  const weekMeta = [];
+  let X = 0;
+  for (let w = min; w < endTs; w += 7 * DAY) {
+    const exp = expandedWeeks.has(w);
+    const wpx = exp ? 7 * DCOL : COL;
+    weekMeta.push({ ts: w, exp, x: X, w: wpx });
+    X += wpx;
+  }
+  const width = X;
+  const px = (t) => {
+    if (t <= min) return 0;
+    for (const m of weekMeta) if (t < m.ts + 7 * DAY) return m.x + (t - m.ts) / (7 * DAY) * m.w;
+    return width;
+  };
+  const fmt = (ts) => { const d = new Date(ts); return (d.getUTCMonth() + 1) + "/" + d.getUTCDate(); };
+  const header = weekMeta.map(m => {
+    if (!m.exp) return `<div class="g-week" data-wts="${m.ts}" title="點擊展開為單日檢視" style="left:${m.x}px;width:${m.w}px">${fmt(m.ts)}</div>`;
+    return Array.from({ length: 7 }, (_, i) =>
+      `<div class="g-week g-day" data-wts="${m.ts}" title="點擊收合回週檢視" style="left:${m.x + i * DCOL}px;width:${DCOL}px"><span>${fmt(m.ts + i * DAY)}</span><span class="wd">${WD[i]}</span></div>`
+    ).join("");
+  }).join("");
   let prevPhase = null;
   const rows = g.map(t => {
     let bar = "";
@@ -693,18 +716,24 @@ function renderGanttChart() {
     }
     const sep = t.phase !== prevPhase ? " g-sep" : "";
     prevPhase = t.phase;
-    return `<div class="g-row${sep}" data-gid="${esc(t.id)}"><div class="g-lbl"><b>${esc(t.id)}</b>&nbsp;${esc(t.task)}</div><div class="g-tl" style="width:${width}px;${grid}">${bar}</div></div>`;
+    return `<div class="g-row${sep}" data-gid="${esc(t.id)}"><div class="g-lbl"><b>${esc(t.id)}</b>&nbsp;${esc(t.task)}</div><div class="g-tl" style="width:${width}px">${bar}</div></div>`;
   }).join("");
+  let lay = "";
+  weekMeta.forEach(m => {
+    if (m.exp) {
+      lay += `<div class="gl-we" style="left:${m.x + 5 * DCOL}px;width:${2 * DCOL}px"></div>`;
+      for (let i = 1; i < 7; i++) lay += `<div class="gl-d" style="left:${m.x + i * DCOL}px"></div>`;
+    }
+    lay += `<div class="gl-w" style="left:${m.x}px"></div>`;
+  });
   const today = Date.now();
-  const hasToday = today >= min && today <= end;
-  box.innerHTML = `<div class="g-inner" style="width:auto;min-width:${width + 190}px">
-    <div class="g-row g-head"><div class="g-lbl">任務 / 週</div><div class="g-tl" style="width:${width}px;${grid}">${weekCells}</div></div>
-    ${rows}${hasToday ? '<div class="g-today"></div>' : ""}</div>`;
-  const tl = box.querySelector(".g-today");
-  if (tl) {
-    const lblw = box.querySelector(".g-lbl").offsetWidth;
-    tl.style.left = (lblw + px(today)).toFixed(1) + "px";
-  }
+  if (today >= min && today <= endTs) lay += `<div class="g-today" style="left:${px(today).toFixed(1)}px"></div>`;
+  box.innerHTML = `<div class="g-inner" style="min-width:${width + 190}px">
+    <div class="g-row g-head"><div class="g-lbl">任務 / 週</div><div class="g-tl" style="width:${width}px">${header}</div></div>
+    ${rows}<div class="g-gridlay" style="width:${width}px"></div></div>`;
+  const layEl = box.querySelector(".g-gridlay");
+  layEl.innerHTML = lay;
+  layEl.style.left = box.querySelector(".g-lbl").offsetWidth + "px";
 }
 
 let gpopTask = null;
@@ -973,6 +1002,10 @@ document.addEventListener("click", async (e) => {
     const coefs = [...document.querySelectorAll("input[data-coef]")].map(i => Number(i.value));
     if (coefs.some(c => !isFinite(c))) { toast("係數需為數字", true); return; }
     saveOp("pnl.coefs", { coefs }, "季節係數已更新");
+  } else if (act === "gantt.collapse") {
+    expandedWeeks.clear();
+    hideGpop();
+    renderGanttChart();
   }
 });
 
@@ -986,6 +1019,14 @@ document.addEventListener("change", (e) => {
 
 document.addEventListener("click", (e) => {
   const pop = $("#gpop");
+  const wk = e.target.closest(".g-week[data-wts]");
+  if (wk) {
+    hideGpop();
+    const ts = Number(wk.dataset.wts);
+    if (expandedWeeks.has(ts)) expandedWeeks.delete(ts); else expandedWeeks.add(ts);
+    renderGanttChart();
+    return;
+  }
   const row = e.target.closest("[data-gid]");
   if (pop.style.display === "block" && !e.target.closest("#gpop") && !row) hideGpop();
   if (row) {
