@@ -165,6 +165,7 @@ td select{padding:4px 6px;font-size:13px}
     <h1>品牌籌備中控系統</h1>
     <div class="sub">Gelato Brand Control Center</div>
     <input id="pw" type="password" placeholder="輸入密碼" autocomplete="current-password">
+    <label style="display:flex;gap:8px;align-items:center;font-size:13px;color:var(--grey);margin-bottom:14px;cursor:pointer"><input type="checkbox" id="rememberMe" checked style="width:auto;margin:0">記住我——這台裝置以後免輸入密碼（自動登入）</label>
     <button class="btn w100" id="btnLogin">登入</button>
     <div class="msg" id="loginMsg"></div>
   </div>
@@ -381,19 +382,38 @@ async function doLogin() {
       const r = await api({ action:"login", password:pw });
       if (!r.ok) { $("#loginMsg").textContent = r.error==="bad_password" ? "密碼錯誤" : "登入失敗：" + (r.error||""); return; }
       TOKEN = r.token; sessionStorage.setItem("gelato_token", TOKEN);
+      if ($("#rememberMe")?.checked) localStorage.setItem("gelato_pw", pw);
+      else localStorage.removeItem("gelato_pw");
     }
     $("#loginMsg").textContent = "";
     await loadData();
   } catch (e) { $("#loginMsg").textContent = "無法連線 API，請確認網址與網路"; }
 }
 
-async function loadData() {
+/** 以本機記住的密碼自動換新 token；密碼失效則清除並回傳 false */
+async function ensureToken() {
+  if (TOKEN) return true;
+  const saved = localStorage.getItem("gelato_pw");
+  if (!saved) return false;
+  try {
+    const r = await api({ action:"login", password:saved });
+    if (r.ok) { TOKEN = r.token; sessionStorage.setItem("gelato_token", TOKEN); return true; }
+  } catch (e) { return false; }
+  localStorage.removeItem("gelato_pw");
+  return false;
+}
+
+async function loadData(retried) {
   try {
     if (DEMO) { DATA = DEMO_DATA; demoRecalcAll(); }
     else {
       const r = await api({ action:"data", token:TOKEN });
       if (!r.ok) {
-        if (r.error === "unauthorized") { sessionStorage.removeItem("gelato_token"); TOKEN=""; showLogin("登入已逾時（約 6 小時），請重新登入"); }
+        if (r.error === "unauthorized") {
+          sessionStorage.removeItem("gelato_token"); TOKEN = "";
+          if (!retried && await ensureToken()) return loadData(true);
+          showLogin("登入已逾時，請重新登入");
+        }
         else showLogin("讀取失敗：" + (r.error||""));
         return;
       }
@@ -413,7 +433,7 @@ function showLogin(msg) {
 }
 
 /* ================= 寫入 ================= */
-async function saveOp(op, payload, successMsg) {
+async function saveOp(op, payload, successMsg, retried) {
   if (DEMO) {
     try { applyDemoWrite(op, payload); demoRecalcAll(); renderAll(); toast((successMsg||"已儲存") + "（demo 本機模擬）"); return true; }
     catch (e) { toast(String(e.message||e), true); return false; }
@@ -421,7 +441,12 @@ async function saveOp(op, payload, successMsg) {
   try {
     const r = await api({ action:"write", op, payload, token:TOKEN });
     if (!r.ok) {
-      if (r.error === "unauthorized") { showLogin("登入已逾時，請重新登入"); return false; }
+      if (r.error === "unauthorized") {
+        sessionStorage.removeItem("gelato_token"); TOKEN = "";
+        if (!retried && await ensureToken()) return saveOp(op, payload, successMsg, true);
+        showLogin("登入已逾時，請重新登入");
+        return false;
+      }
       toast("儲存失敗：" + (r.detail || r.error), true);
       return false;
     }
@@ -1166,7 +1191,11 @@ async function savePnlParams() {
     return;
   }
   for (const k of keys) {
-    const r = await api({ action:"write", op:"pnl.param", payload:{ label:k, values:dirty[k] }, token:TOKEN });
+    let r = await api({ action:"write", op:"pnl.param", payload:{ label:k, values:dirty[k] }, token:TOKEN });
+    if (!r.ok && r.error === "unauthorized") {
+      TOKEN = "";
+      if (await ensureToken()) r = await api({ action:"write", op:"pnl.param", payload:{ label:k, values:dirty[k] }, token:TOKEN });
+    }
     if (!r.ok) { toast(`「${k}」儲存失敗：` + (r.detail||r.error), true); return; }
   }
   await loadData();
@@ -1217,12 +1246,20 @@ document.querySelectorAll("nav button").forEach(b => b.addEventListener("click",
 }));
 $("#btnLogin").addEventListener("click", doLogin);
 $("#pw").addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
-$("#btnReload").addEventListener("click", loadData);
-$("#btnLogout").addEventListener("click", () => { sessionStorage.removeItem("gelato_token"); TOKEN=""; showLogin("已登出"); });
+$("#btnReload").addEventListener("click", () => loadData());
+$("#btnLogout").addEventListener("click", () => { sessionStorage.removeItem("gelato_token"); localStorage.removeItem("gelato_pw"); TOKEN=""; showLogin("已登出，並已清除本機記住的密碼"); });
 
 /* ================= 啟動 ================= */
-if (DEMO) { TOKEN = "demo"; loadData(); }
-else if (TOKEN) { loadData(); }
+async function boot() {
+  if (DEMO) { TOKEN = "demo"; loadData(); return; }
+  if (!TOKEN && localStorage.getItem("gelato_pw")) {
+    $("#loginMsg").textContent = "自動登入中…";
+    await ensureToken();
+    $("#loginMsg").textContent = "";
+  }
+  if (TOKEN) loadData();
+}
+boot();
 window.addEventListener("load", () => { if (window.Chart && DATA && !window.__pnlChart) renderPnl(); });
 </script>
 </body>
