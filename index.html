@@ -227,7 +227,9 @@ td select{padding:4px 6px;font-size:13px}
       <div class="t-scroll"><table id="rmTbl"></table></div>
     </section>
     <section id="sec-pricing">
-      <div class="bar"><h2>定價與毛利<span class="hint">≤30% 綠｜30–35% 橙｜>35% 紅</span></h2></div>
+      <div class="bar"><h2>販售中口味毛利板<span class="hint">狀態＝定案 即自動上板｜以單球為基準單位｜≤30% 綠、30–35% 橙、>35% 紅</span></h2></div>
+      <div id="flavorBoard"></div>
+      <h2>品項定價（雙通路，以製程參數所選單一口味計）</h2>
       <div class="t-scroll"><table id="priceTbl"></table></div>
       <div id="blendBox"></div>
       <h2>售價單位（冰體克數）</h2>
@@ -306,13 +308,13 @@ const DEMO_DATA = {
     {id:"RM-110",category:"包材",name:"提袋",supplier:"包材廠",spec:"個",price:3.5,netG:1,loss:0,solids:null,sugar:null,fat:null,note:""}
   ],
   recipes:[
-    {version:"BASE-v1",flavor:"經典白基底",type:"乳基",status:"定案",share:0.25,note:"初版定案",items:[{rm:"RM-001",grams:620},{rm:"RM-002",grams:160},{rm:"RM-003",grams:45},{rm:"RM-004",grams:130},{rm:"RM-005",grams:40},{rm:"RM-007",grams:5}]},
+    {version:"BASE-v1",flavor:"經典白基底",type:"乳基",status:"定案",share:0.30,note:"初版定案",items:[{rm:"RM-001",grams:620},{rm:"RM-002",grams:160},{rm:"RM-003",grams:45},{rm:"RM-004",grams:130},{rm:"RM-005",grams:40},{rm:"RM-007",grams:5}]},
     {version:"PIS-v1",flavor:"西西里開心果",type:"乳基",status:"封存",note:"初版",items:[{rm:"RM-001",grams:592.2},{rm:"RM-002",grams:110},{rm:"RM-003",grams:40},{rm:"RM-004",grams:117},{rm:"RM-005",grams:36},{rm:"RM-007",grams:4.5},{rm:"RM-008",grams:100}]},
     {version:"PIS-v2",flavor:"西西里開心果",type:"乳基",status:"定案",share:0.15,note:"甜度下修兩成",items:[{rm:"RM-001",grams:622.8},{rm:"RM-002",grams:110},{rm:"RM-003",grams:40},{rm:"RM-004",grams:93.6},{rm:"RM-005",grams:28.8},{rm:"RM-007",grams:4.5},{rm:"RM-008",grams:100}]},
-    {version:"VAN-v1",flavor:"馬達加斯加香草",type:"乳基",status:"測試中",share:0.20,note:"",items:[{rm:"RM-001",grams:610},{rm:"RM-002",grams:165},{rm:"RM-003",grams:45},{rm:"RM-004",grams:125},{rm:"RM-005",grams:40},{rm:"RM-007",grams:5},{rm:"RM-010",grams:12}]},
-    {version:"CHO-v1",flavor:"特濃可可",type:"乳基",status:"測試中",share:0.15,note:"糖度偏高待下修",items:[{rm:"RM-001",grams:595},{rm:"RM-002",grams:100},{rm:"RM-003",grams:30},{rm:"RM-004",grams:150},{rm:"RM-005",grams:45},{rm:"RM-007",grams:5},{rm:"RM-009",grams:75}]},
-    {version:"STR-v1",flavor:"大湖草莓雪酪",type:"雪酪",status:"測試中",share:0.15,note:"",items:[{rm:"RM-011",grams:550},{rm:"RM-004",grams:175},{rm:"RM-005",grams:55},{rm:"RM-006",grams:30},{rm:"RM-013",grams:25},{rm:"RM-007",grams:4},{rm:"RM-014",grams:161}]},
-    {version:"MGO-v1",flavor:"愛文芒果雪酪",type:"雪酪",status:"測試中",share:0.10,note:"",items:[{rm:"RM-012",grams:500},{rm:"RM-004",grams:160},{rm:"RM-005",grams:50},{rm:"RM-006",grams:25},{rm:"RM-013",grams:30},{rm:"RM-007",grams:4},{rm:"RM-014",grams:231}]}
+    {version:"VAN-v1",flavor:"馬達加斯加香草",type:"乳基",status:"定案",share:0.20,note:"",items:[{rm:"RM-001",grams:610},{rm:"RM-002",grams:165},{rm:"RM-003",grams:45},{rm:"RM-004",grams:125},{rm:"RM-005",grams:40},{rm:"RM-007",grams:5},{rm:"RM-010",grams:12}]},
+    {version:"CHO-v1",flavor:"特濃可可",type:"乳基",status:"測試中",note:"糖度偏高待下修",items:[{rm:"RM-001",grams:595},{rm:"RM-002",grams:100},{rm:"RM-003",grams:30},{rm:"RM-004",grams:150},{rm:"RM-005",grams:45},{rm:"RM-007",grams:5},{rm:"RM-009",grams:75}]},
+    {version:"STR-v1",flavor:"大湖草莓雪酪",type:"雪酪",status:"定案",share:0.20,note:"",items:[{rm:"RM-011",grams:550},{rm:"RM-004",grams:175},{rm:"RM-005",grams:55},{rm:"RM-006",grams:30},{rm:"RM-013",grams:25},{rm:"RM-007",grams:4},{rm:"RM-014",grams:161}]},
+    {version:"MGO-v1",flavor:"愛文芒果雪酪",type:"雪酪",status:"定案",share:0.15,note:"",items:[{rm:"RM-012",grams:500},{rm:"RM-004",grams:160},{rm:"RM-005",grams:50},{rm:"RM-006",grams:25},{rm:"RM-013",grams:30},{rm:"RM-007",grams:4},{rm:"RM-014",grams:231}]}
   ],
   costcard:{version:"PIS-v2",flavor:"西西里開心果",type:"乳基",yieldRate:0.92,overrun:0.30,density:1.08,displayLoss:0.05,finishedPerG:null,solids:null,sugar:null,fat:null,verdicts:[]},
   bom:[
@@ -572,7 +574,9 @@ function applyDemoWrite(op, pl) {
 
 /* ================= 混合口味成本（最終成本）計算 ================= */
 function computeBlend() {
-  const rs = (DATA?.recipes || []).filter(r => (r.share || 0) > 0 && r.finishedPerG != null && r.status !== "封存");
+  // 「定案」＝販售中：只有定案口味計入混合成本（Robert 的產品定義）
+  const rs = (DATA?.recipes || []).filter(r => (r.share || 0) > 0 && r.finishedPerG != null && r.status === "定案");
+  const excluded = (DATA?.recipes || []).filter(r => (r.share || 0) > 0 && r.status !== "定案" && r.status !== "封存").length;
   if (!rs.length) return null;
   const tot = rs.reduce((a, r) => a + r.share, 0);
   if (tot <= 0) return null;
@@ -586,7 +590,7 @@ function computeBlend() {
   }).filter(Boolean);
   const ws = items.reduce((a, i) => a + (i.share || 0), 0);
   const weightedRate = ws > 0 ? items.reduce((a, i) => a + (i.costRate || 0) * (i.share || 0), 0) / ws : null;
-  return { perG, totalShare: tot, items, weightedRate, flavors: rs.map(r => ({ version: r.version, flavor: r.flavor, perG: r.finishedPerG, share: r.share })) };
+  return { perG, totalShare: tot, items, weightedRate, excluded, flavors: rs.map(r => ({ version: r.version, flavor: r.flavor, perG: r.finishedPerG, share: r.share })) };
 }
 
 /* ================= Modal ================= */
@@ -677,6 +681,13 @@ function renderInsights() {
   }
   (pr?.items||[]).filter(i => i.dMarginRate != null && i.dMarginRate < 0.45).forEach(i =>
     out.push({cls:"info", txt:`外送「${esc(i.name)}」扣抽成後毛利率僅 <b>${pct(i.dMarginRate)}</b> → 檢視外送價差或只上高毛利品項。`}));
+  const bomS = (DATA.bom||[]).find(b => (b.name||"").includes("單球"));
+  const priS = (pr?.items||[]).find(i => (i.name||"").includes("單球"));
+  if (bomS && priS && priS.price > 0) {
+    const packC = bomS.packCost != null ? bomS.packCost : ((bomS.totalCost||0) - (bomS.iceCost||0));
+    const reds = (DATA.recipes||[]).filter(r => r.status === "定案" && r.finishedPerG != null && (bomS.grams * r.finishedPerG + packC) / priS.price > 0.35);
+    if (reds.length) out.push({cls:"info", txt:`販售中口味有 <b>${reds.length}</b> 支在單球 ${money(priS.price)} 元下成本率超過 35%（${reds.map(r=>esc(r.flavor)).join("、")}）→ 選項：調配方降本／口味專屬加價／壓低銷售佔比。詳見「定價」分頁毛利板。`});
+  }
   $("#insights").innerHTML = out.length ? out.map(o=>`<li class="${o.cls}">${o.txt}</li>`).join("") : `<li class="good">目前無警示。</li>`;
 }
 
@@ -858,7 +869,37 @@ function renderRm() {
     <th class="num">進貨價</th><th class="num">淨含量(g)</th><th class="num">前處理損耗</th><th class="num">有效每克(元)</th><th class="num">固/糖/脂</th><th></th></tr></thead><tbody>${rows}</tbody>`;
 }
 
+function renderFlavorBoard() {
+  const box = $("#flavorBoard");
+  const onSale = (DATA.recipes || []).filter(r => r.status === "定案" && r.finishedPerG != null);
+  const bomS = (DATA.bom || []).find(b => (b.name || "").includes("單球")) || (DATA.bom || [])[0];
+  const priS = (DATA.pricing?.items || []).find(i => (i.name || "").includes("單球")) || (DATA.pricing?.items || [])[0];
+  if (!onSale.length || !bomS || !priS || !priS.price) {
+    box.innerHTML = `<div class="card note">尚無「定案」口味（或缺少單球品項）。口味在「配方」分頁狀態改成「定案」後，會自動出現在這裡。</div>`;
+    return;
+  }
+  const packCost = bomS.packCost != null ? bomS.packCost : ((bomS.totalCost || 0) - (bomS.iceCost || 0));
+  const price = priS.price;
+  const rows = onSale.map(r => {
+    const unitCost = bomS.grams * r.finishedPerG + packCost;
+    return { r, unitCost, costRate: unitCost / price, margin: price - unitCost, marginRate: (price - unitCost) / price };
+  }).sort((a, b) => b.costRate - a.costRate);
+  const worst = rows[0], best = rows[rows.length - 1];
+  const redCount = rows.filter(x => x.costRate > 0.35).length;
+  const html = rows.map(x => `<tr><td><b>${esc(x.r.flavor)}</b> <span class="note">${esc(x.r.version)}</span></td>
+    <td class="num">${x.r.finishedPerG.toFixed(3)}</td>
+    <td class="num">${x.unitCost.toFixed(1)}</td>
+    <td class="num">${money(price)}</td>
+    <td class="num">${costBadge(x.costRate)}</td>
+    <td class="num">${x.margin.toFixed(1)}</td>
+    <td class="num"><b>${pct(x.marginRate)}</b></td>
+    <td class="num">${x.r.share != null ? pct(x.r.share, 0) : "—"}</td></tr>`).join("");
+  box.innerHTML = `<div class="t-scroll"><table><thead><tr><th>口味（由差到好排序）</th><th class="num">每克成本(元)</th><th class="num">單球總成本</th><th class="num">單球售價</th><th class="num">成本率</th><th class="num">毛利額(元)</th><th class="num">毛利率</th><th class="num">銷售佔比</th></tr></thead><tbody>${html}</tbody></table></div>
+    <p class="note">同一單球售價下，毛利率排序＝每克成本排序。毛利帶：最低 <b>${pct(worst.marginRate)}</b>（${esc(worst.r.flavor)}）～ 最高 <b>${pct(best.marginRate)}</b>（${esc(best.r.flavor)}）${redCount ? `｜<b style="color:var(--bad)">${redCount} 支超過 35% 警戒線</b>` : "｜全數在警戒線內"}。單品板管「口味決策」（調配方／專屬定價／佔比控管），下方混合成本依佔比加權後管「損益的數字」。</p>`;
+}
+
 function renderPricing() {
+  renderFlavorBoard();
   const p = DATA.pricing || {items:[]};
   const rows = p.items.map(i => `
     <tr><td><b>${esc(i.name)}</b></td>
@@ -890,9 +931,10 @@ function renderPricing() {
     $("#blendBox").innerHTML = `<h2>混合口味成本（最終成本）</h2>
       <div class="card note">上表是「單一口味情境」（以製程參數所選口味計，適合看單口味上下限）。要算全店最終成本率：到「配方」分頁替每支販售口味填「銷售佔比%」，這裡就會自動加權計算。</div>`;
   } else {
-    const shareWarn = Math.abs(bl.totalShare - 1) > 0.02
-      ? `<span class="badge b-mid">口味佔比合計 ${pct(bl.totalShare,0)}，建議調成 100%</span>`
-      : `<span class="badge b-ok">口味佔比合計 100%</span>`;
+    const shareWarn = (Math.abs(bl.totalShare - 1) > 0.02
+      ? `<span class="badge b-mid">定案口味佔比合計 ${pct(bl.totalShare,0)}，建議調成 100%</span>`
+      : `<span class="badge b-ok">定案口味佔比合計 100%</span>`)
+      + (bl.excluded ? `<span class="badge b-mid" style="margin-left:6px">${bl.excluded} 支非定案口味填了佔比，未計入（定案後自動納入）</span>` : "");
     const rows2 = bl.items.map(i => `<tr><td><b>${esc(i.name)}</b></td><td class="num">${i.grams}</td><td class="num">${i.unitCost.toFixed(1)}</td><td class="num">${money(i.price)}</td><td class="num">${costBadge(i.costRate)}</td><td class="num">${pct(i.share,0)}</td></tr>`).join("");
     $("#blendBox").innerHTML = `
       <div class="bar"><h2>混合口味成本（最終成本，依口味銷售佔比加權）</h2><span class="sp"></span><button class="btn" data-act="blend.apply">套用到損益成本率</button></div>
