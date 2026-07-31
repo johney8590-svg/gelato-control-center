@@ -229,6 +229,7 @@ td select{padding:4px 6px;font-size:13px}
     <section id="sec-pricing">
       <div class="bar"><h2>定價與毛利<span class="hint">≤30% 綠｜30–35% 橙｜>35% 紅</span></h2></div>
       <div class="t-scroll"><table id="priceTbl"></table></div>
+      <div id="blendBox"></div>
       <h2>售價單位（冰體克數）</h2>
       <div class="t-scroll"><table id="bomTbl"></table></div>
       <p class="note">外送參考：Foodpanda 抽成 31%／UberEats 35%；價差原則每份 13–18 元。冰體成本以「製程參數」所選版本口味計。</p>
@@ -305,13 +306,13 @@ const DEMO_DATA = {
     {id:"RM-110",category:"包材",name:"提袋",supplier:"包材廠",spec:"個",price:3.5,netG:1,loss:0,solids:null,sugar:null,fat:null,note:""}
   ],
   recipes:[
-    {version:"BASE-v1",flavor:"經典白基底",type:"乳基",status:"定案",note:"初版定案",items:[{rm:"RM-001",grams:620},{rm:"RM-002",grams:160},{rm:"RM-003",grams:45},{rm:"RM-004",grams:130},{rm:"RM-005",grams:40},{rm:"RM-007",grams:5}]},
+    {version:"BASE-v1",flavor:"經典白基底",type:"乳基",status:"定案",share:0.25,note:"初版定案",items:[{rm:"RM-001",grams:620},{rm:"RM-002",grams:160},{rm:"RM-003",grams:45},{rm:"RM-004",grams:130},{rm:"RM-005",grams:40},{rm:"RM-007",grams:5}]},
     {version:"PIS-v1",flavor:"西西里開心果",type:"乳基",status:"封存",note:"初版",items:[{rm:"RM-001",grams:592.2},{rm:"RM-002",grams:110},{rm:"RM-003",grams:40},{rm:"RM-004",grams:117},{rm:"RM-005",grams:36},{rm:"RM-007",grams:4.5},{rm:"RM-008",grams:100}]},
-    {version:"PIS-v2",flavor:"西西里開心果",type:"乳基",status:"定案",note:"甜度下修兩成",items:[{rm:"RM-001",grams:622.8},{rm:"RM-002",grams:110},{rm:"RM-003",grams:40},{rm:"RM-004",grams:93.6},{rm:"RM-005",grams:28.8},{rm:"RM-007",grams:4.5},{rm:"RM-008",grams:100}]},
-    {version:"VAN-v1",flavor:"馬達加斯加香草",type:"乳基",status:"測試中",note:"",items:[{rm:"RM-001",grams:610},{rm:"RM-002",grams:165},{rm:"RM-003",grams:45},{rm:"RM-004",grams:125},{rm:"RM-005",grams:40},{rm:"RM-007",grams:5},{rm:"RM-010",grams:12}]},
-    {version:"CHO-v1",flavor:"特濃可可",type:"乳基",status:"測試中",note:"糖度偏高待下修",items:[{rm:"RM-001",grams:595},{rm:"RM-002",grams:100},{rm:"RM-003",grams:30},{rm:"RM-004",grams:150},{rm:"RM-005",grams:45},{rm:"RM-007",grams:5},{rm:"RM-009",grams:75}]},
-    {version:"STR-v1",flavor:"大湖草莓雪酪",type:"雪酪",status:"測試中",note:"",items:[{rm:"RM-011",grams:550},{rm:"RM-004",grams:175},{rm:"RM-005",grams:55},{rm:"RM-006",grams:30},{rm:"RM-013",grams:25},{rm:"RM-007",grams:4},{rm:"RM-014",grams:161}]},
-    {version:"MGO-v1",flavor:"愛文芒果雪酪",type:"雪酪",status:"測試中",note:"",items:[{rm:"RM-012",grams:500},{rm:"RM-004",grams:160},{rm:"RM-005",grams:50},{rm:"RM-006",grams:25},{rm:"RM-013",grams:30},{rm:"RM-007",grams:4},{rm:"RM-014",grams:231}]}
+    {version:"PIS-v2",flavor:"西西里開心果",type:"乳基",status:"定案",share:0.15,note:"甜度下修兩成",items:[{rm:"RM-001",grams:622.8},{rm:"RM-002",grams:110},{rm:"RM-003",grams:40},{rm:"RM-004",grams:93.6},{rm:"RM-005",grams:28.8},{rm:"RM-007",grams:4.5},{rm:"RM-008",grams:100}]},
+    {version:"VAN-v1",flavor:"馬達加斯加香草",type:"乳基",status:"測試中",share:0.20,note:"",items:[{rm:"RM-001",grams:610},{rm:"RM-002",grams:165},{rm:"RM-003",grams:45},{rm:"RM-004",grams:125},{rm:"RM-005",grams:40},{rm:"RM-007",grams:5},{rm:"RM-010",grams:12}]},
+    {version:"CHO-v1",flavor:"特濃可可",type:"乳基",status:"測試中",share:0.15,note:"糖度偏高待下修",items:[{rm:"RM-001",grams:595},{rm:"RM-002",grams:100},{rm:"RM-003",grams:30},{rm:"RM-004",grams:150},{rm:"RM-005",grams:45},{rm:"RM-007",grams:5},{rm:"RM-009",grams:75}]},
+    {version:"STR-v1",flavor:"大湖草莓雪酪",type:"雪酪",status:"測試中",share:0.15,note:"",items:[{rm:"RM-011",grams:550},{rm:"RM-004",grams:175},{rm:"RM-005",grams:55},{rm:"RM-006",grams:30},{rm:"RM-013",grams:25},{rm:"RM-007",grams:4},{rm:"RM-014",grams:161}]},
+    {version:"MGO-v1",flavor:"愛文芒果雪酪",type:"雪酪",status:"測試中",share:0.10,note:"",items:[{rm:"RM-012",grams:500},{rm:"RM-004",grams:160},{rm:"RM-005",grams:50},{rm:"RM-006",grams:25},{rm:"RM-013",grams:30},{rm:"RM-007",grams:4},{rm:"RM-014",grams:231}]}
   ],
   costcard:{version:"PIS-v2",flavor:"西西里開心果",type:"乳基",yieldRate:0.92,overrun:0.30,density:1.08,displayLoss:0.05,finishedPerG:null,solids:null,sugar:null,fat:null,verdicts:[]},
   bom:[
@@ -548,6 +549,9 @@ function applyDemoWrite(op, pl) {
   } else if (op === "recipe.setStatus") {
     const x = C.find(r => r.version === pl.version); if (!x) throw new Error("找不到版本");
     x.status = pl.status;
+  } else if (op === "recipe.setShare") {
+    const x = C.find(r => r.version === pl.version); if (!x) throw new Error("找不到版本");
+    x.share = Number(pl.share);
   } else if (op === "costcard.update") {
     Object.assign(DATA.costcard, pl);
   } else if (op === "bom.update") {
@@ -564,6 +568,25 @@ function applyDemoWrite(op, pl) {
   } else if (op === "pnl.coefs") {
     DATA.pnl.months.coef = pl.coefs.map(Number);
   } else throw new Error("未知操作");
+}
+
+/* ================= 混合口味成本（最終成本）計算 ================= */
+function computeBlend() {
+  const rs = (DATA?.recipes || []).filter(r => (r.share || 0) > 0 && r.finishedPerG != null && r.status !== "封存");
+  if (!rs.length) return null;
+  const tot = rs.reduce((a, r) => a + r.share, 0);
+  if (tot <= 0) return null;
+  const perG = rs.reduce((a, r) => a + r.finishedPerG * r.share, 0) / tot;
+  const items = (DATA.pricing?.items || []).map(i => {
+    const b = (DATA.bom || []).find(x => x.name === i.name);
+    if (!b || b.grams == null) return null;
+    const packCost = b.packCost != null ? b.packCost : ((b.totalCost || 0) - (b.iceCost || 0));
+    const unitCost = b.grams * perG + packCost;
+    return { name: i.name, grams: b.grams, unitCost, price: i.price, costRate: i.price > 0 ? unitCost / i.price : null, share: i.share };
+  }).filter(Boolean);
+  const ws = items.reduce((a, i) => a + (i.share || 0), 0);
+  const weightedRate = ws > 0 ? items.reduce((a, i) => a + (i.costRate || 0) * (i.share || 0), 0) / ws : null;
+  return { perG, totalShare: tot, items, weightedRate, flavors: rs.map(r => ({ version: r.version, flavor: r.flavor, perG: r.finishedPerG, share: r.share })) };
 }
 
 /* ================= Modal ================= */
@@ -635,10 +658,13 @@ function renderInsights() {
   const out = [];
   const g = DATA.gantt || [], pr = DATA.pricing, pn = DATA.pnl;
   g.filter(t => t.warn || t.status === "卡關").forEach(t => out.push({cls:"", txt:`<b>${esc(t.id)} ${esc(t.task)}</b>：${esc(t.warn||"⚠ 卡關")}${t.note?`（${esc(t.note)}）`:""} → 優先處理。`}));
-  const sheetRate = pn?.params?.["食材＋包材成本率"]?.base, simRate = pr?.weighted?.costRate;
+  const sheetRate = pn?.params?.["食材＋包材成本率"]?.base;
+  const bl = computeBlend();
+  const simRate = bl ? bl.weightedRate : pr?.weighted?.costRate;
+  const simLabel = bl ? "混合口味最終成本率" : "定價頁加權成本率（單一口味情境）";
   if (sheetRate != null && simRate != null && Math.abs(sheetRate - simRate) > 0.01) {
     const rev = pn?.result?.revenue?.base || 0;
-    out.push({cls:"info", txt:`定價頁加權成本率 <b>${pct(simRate)}</b> 與損益表輸入的 <b>${pct(sheetRate)}</b> 差 ${((simRate-sheetRate)*100).toFixed(1)} 個百分點（以目前所選口味計）≈ 月利差 <b>${money(rev*Math.abs(simRate-sheetRate))}</b> 元 → 到「損益」把成本率調成實際口味組合值。`});
+    out.push({cls:"info", txt:`${simLabel} <b>${pct(simRate)}</b> 與損益表輸入的 <b>${pct(sheetRate)}</b> 差 ${((simRate-sheetRate)*100).toFixed(1)} 個百分點 ≈ 月利差 <b>${money(rev*Math.abs(simRate-sheetRate))}</b> 元 → ${bl ? "到「定價」分頁按「套用到損益成本率」一鍵對齊。" : "到「配方」分頁填口味銷售佔比，即可算出混合最終成本率。"}`});
   }
   const ct = pn?.months?.coefTotal;
   if (ct != null && Math.abs(ct - 12) > 0.05) {
@@ -789,14 +815,19 @@ function renderGantt() {
 function renderRecipes() {
   const rows = (DATA.recipes||[]).map(r => {
     const opts = ["測試中","定案","封存"].map(s=>`<option ${s===r.status?"selected":""}>${s}</option>`).join("");
+    const shareCell = r.status === "封存" ? "—" :
+      `<input type="number" step="1" min="0" style="width:56px" value="${r.share!=null?Math.round(r.share*100):""}" placeholder="%" data-chg="recipe.share" data-ver="${esc(r.version)}">`;
     return `<tr><td><b>${esc(r.version)}</b></td><td>${esc(r.flavor||"")}</td><td>${esc(r.type||"")}</td>
       <td><select data-chg="recipe.status" data-ver="${esc(r.version)}">${opts}</select></td>
+      <td class="num">${shareCell}</td>
       <td class="num">${r.mixCostPerKg==null?"—":nt.format(Math.round(r.mixCostPerKg))}</td>
       <td class="num">${r.finishedPerG==null?"—":r.finishedPerG.toFixed(3)}</td>
       <td class="num">${pct(r.solids)}</td><td class="num">${pct(r.sugar)}</td><td class="num">${pct(r.fat)}</td>
       <td>${judgeBadge(r.judgeSolids)} ${judgeBadge(r.judgeSugar)} ${judgeBadge(r.judgeFat)}</td></tr>`;
   }).join("");
+  const shareTot = (DATA.recipes||[]).filter(r=>r.status!=="封存").reduce((a,r)=>a+(r.share||0),0);
   $("#recipeTbl").innerHTML = `<thead><tr><th>版本</th><th>口味</th><th>類型</th><th>狀態</th>
+    <th class="num">銷售佔比%<br><span style="font-weight:400">合計 ${Math.round(shareTot*100)}%</span></th>
     <th class="num">Mix成本(元/kg)</th><th class="num">成品成本(元/g)</th>
     <th class="num">固形物</th><th class="num">糖度</th><th class="num">脂肪</th><th>平衡(固/糖/脂)</th></tr></thead><tbody>${rows}</tbody>`;
   const cc = DATA.costcard || {};
@@ -854,6 +885,21 @@ function renderPricing() {
       <td class="num"><b>${b.totalCost!=null?b.totalCost.toFixed(1):"—"}</b></td>
       <td><button class="btn-mini" data-act="bom.save" data-name="${esc(b.name)}">儲存</button></td></tr>`).join("");
   $("#bomTbl").innerHTML = `<thead><tr><th>售價單位</th><th class="num">冰體克數（可改）</th><th class="num">冰體成本</th><th class="num">包材成本</th><th class="num">總變動成本</th><th></th></tr></thead><tbody>${bomRows}</tbody>`;
+  const bl = computeBlend();
+  if (!bl) {
+    $("#blendBox").innerHTML = `<h2>混合口味成本（最終成本）</h2>
+      <div class="card note">上表是「單一口味情境」（以製程參數所選口味計，適合看單口味上下限）。要算全店最終成本率：到「配方」分頁替每支販售口味填「銷售佔比%」，這裡就會自動加權計算。</div>`;
+  } else {
+    const shareWarn = Math.abs(bl.totalShare - 1) > 0.02
+      ? `<span class="badge b-mid">口味佔比合計 ${pct(bl.totalShare,0)}，建議調成 100%</span>`
+      : `<span class="badge b-ok">口味佔比合計 100%</span>`;
+    const rows2 = bl.items.map(i => `<tr><td><b>${esc(i.name)}</b></td><td class="num">${i.grams}</td><td class="num">${i.unitCost.toFixed(1)}</td><td class="num">${money(i.price)}</td><td class="num">${costBadge(i.costRate)}</td><td class="num">${pct(i.share,0)}</td></tr>`).join("");
+    $("#blendBox").innerHTML = `
+      <div class="bar"><h2>混合口味成本（最終成本，依口味銷售佔比加權）</h2><span class="sp"></span><button class="btn" data-act="blend.apply">套用到損益成本率</button></div>
+      <div class="card" style="margin-bottom:10px">加權平均冰體成本 <b style="color:var(--green)">${bl.perG.toFixed(4)} 元/g</b>｜${shareWarn}｜全店最終成本率 ${costBadge(bl.weightedRate)}</div>
+      <div class="t-scroll"><table><thead><tr><th>品項</th><th class="num">冰體g</th><th class="num">混合單位成本</th><th class="num">售價</th><th class="num">混合成本率</th><th class="num">品項佔比</th></tr></thead><tbody>${rows2}</tbody></table></div>
+      <p class="note">計算：Σ(口味成品每克成本 × 口味銷售佔比) → 加權每克 → 杯型克數×加權每克＋包材 → 品項成本率 → 依品項佔比加權。假設各口味的杯型分佈相同（以克加權），雙球混口味免特別處理。開幕後以 POS 實際銷量回填佔比即可越算越準。</p>`;
+  }
 }
 
 function renderPnl() {
@@ -1006,6 +1052,11 @@ document.addEventListener("click", async (e) => {
     expandedWeeks.clear();
     hideGpop();
     renderGanttChart();
+  } else if (act === "blend.apply") {
+    const b = computeBlend();
+    if (!b || b.weightedRate == null) { toast("請先在「配方」分頁填口味銷售佔比", true); return; }
+    const v = Math.round(b.weightedRate * 1000) / 1000;
+    saveOp("pnl.param", { label:"食材＋包材成本率", values:{ con:v, base:v, opt:v } }, "三情境成本率已套用混合值 " + pct(v));
   }
 });
 
@@ -1014,6 +1065,10 @@ document.addEventListener("change", (e) => {
   if (!el) return;
   if (el.dataset.chg === "recipe.status") {
     saveOp("recipe.setStatus", { version:el.dataset.ver, status:el.value }, el.dataset.ver + " 狀態已更新");
+  } else if (el.dataset.chg === "recipe.share") {
+    const v = Number(el.value);
+    if (!isFinite(v) || v < 0 || v > 100) { toast("佔比需為 0–100 的數字", true); return; }
+    saveOp("recipe.setShare", { version:el.dataset.ver, share:v/100 }, el.dataset.ver + " 銷售佔比已更新");
   }
 });
 
