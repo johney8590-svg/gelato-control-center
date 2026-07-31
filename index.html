@@ -230,12 +230,12 @@ td select{padding:4px 6px;font-size:13px}
     <section id="sec-pricing">
       <div class="bar"><h2>販售中口味毛利板<span class="hint">狀態＝定案 即自動上板｜以單球為基準單位｜≤30% 綠、30–35% 橙、>35% 紅</span></h2></div>
       <div id="flavorBoard"></div>
-      <h2>品項定價（雙通路，以製程參數所選單一口味計）</h2>
+      <h2>品項定價（店內，以製程參數所選單一口味計）</h2>
       <div class="t-scroll"><table id="priceTbl"></table></div>
       <div id="blendBox"></div>
       <h2>售價單位（冰體克數）</h2>
       <div class="t-scroll"><table id="bomTbl"></table></div>
-      <p class="note">外送參考：Foodpanda 抽成 31%／UberEats 35%；價差原則每份 13–18 元。冰體成本以「製程參數」所選版本口味計。</p>
+      <p class="note">外送目前已停用（品牌暫不做外送）：外送欄位已隱藏、損益不計外送抽成；資料與公式保留在 Sheet，要重啟外送跟 Claude 說一聲即可恢復。冰體成本以「製程參數」所選版本口味計。</p>
     </section>
     <section id="sec-pnl">
       <div class="bar"><h2>損益參數（三情境）</h2><span class="sp"></span><button class="btn" data-act="pnl.save">儲存變更</button></div>
@@ -333,7 +333,7 @@ const DEMO_DATA = {
     calcKeys:["月人事費","月折舊","開辦投資合計"],
     params:{
       "日均來客":{con:150,base:200,opt:300},"平均客單價":{con:230,base:230,opt:230},"月營業天數":{con:30,base:30,opt:30},
-      "外送營收佔比":{con:0.15,base:0.20,opt:0.25},"外送平台平均抽成":{con:0.35,base:0.35,opt:0.35},
+      "外送營收佔比":{con:0,base:0,opt:0},"外送平台平均抽成":{con:0.35,base:0.35,opt:0.35},
       "食材＋包材成本率":{con:0.33,base:0.32,opt:0.30},"月租金":{con:75000,base:75000,opt:75000},
       "正職人數":{con:2,base:2,opt:3},"正職月薪":{con:42000,base:42000,opt:42000},
       "PT 月總時數":{con:420,base:520,opt:620},"PT 時薪":{con:220,base:220,opt:220},
@@ -390,6 +390,24 @@ async function doLogin() {
   } catch (e) { $("#loginMsg").textContent = "無法連線 API，請確認網址與網路"; }
 }
 
+/** 外送暫停：若 Sheet 的外送營收佔比仍非 0，自動歸零一次（寫入會記到異動紀錄；重啟外送時把佔比填回即可） */
+let migratedDelivery = false;
+async function migrateNoDelivery() {
+  if (DEMO || migratedDelivery) return;
+  const p = DATA?.pnl?.params?.["外送營收佔比"];
+  if (!p) return;
+  if (!(p.con || 0) && !(p.base || 0) && !(p.opt || 0)) return;
+  migratedDelivery = true;
+  try {
+    const r = await api({ action:"write", op:"pnl.param", payload:{ label:"外送營收佔比", values:{ con:0, base:0, opt:0 } }, token:TOKEN });
+    if (r.ok) {
+      const r2 = await api({ action:"data", token:TOKEN });
+      if (r2.ok) DATA = r2;
+      toast("外送已停用：外送營收佔比已歸零，損益重算完成");
+    }
+  } catch (e) { /* 下次載入再試 */ migratedDelivery = false; }
+}
+
 /** 以本機記住的密碼自動換新 token；密碼失效則清除並回傳 false */
 async function ensureToken() {
   if (TOKEN) return true;
@@ -418,6 +436,7 @@ async function loadData(retried) {
         return;
       }
       DATA = r;
+      await migrateNoDelivery();
     }
     $("#login").style.display = "none";
     $("#app").hidden = false;
@@ -704,8 +723,6 @@ function renderInsights() {
     const ratio = cust / be;
     out.push({cls: ratio >= 1.5 ? "good" : ratio >= 1.1 ? "info" : "", txt:`損益兩平 <b>${be.toFixed(0)} 人/日</b>，基準假設 ${cust} 人 → 安全墊 <b>${ratio.toFixed(2)}×</b>${ratio<1.1?"（貼著兩平線，優先驗證商圈流量）":ratio<1.5?"（尚可，仍建議實測商圈流量）":"（充足，以實測為準）"}。`});
   }
-  (pr?.items||[]).filter(i => i.dMarginRate != null && i.dMarginRate < 0.45).forEach(i =>
-    out.push({cls:"info", txt:`外送「${esc(i.name)}」扣抽成後毛利率僅 <b>${pct(i.dMarginRate)}</b> → 檢視外送價差或只上高毛利品項。`}));
   const bomS = (DATA.bom||[]).find(b => (b.name||"").includes("單球"));
   const priS = (pr?.items||[]).find(i => (i.name||"").includes("單球"));
   if (bomS && priS && priS.price > 0) {
@@ -942,16 +959,13 @@ function renderPricing() {
       <td class="num">${costBadge(i.costRate)}</td>
       <td class="num">${pct(i.marginRate)}</td>
       <td class="num">${money(i.suggestPrice)}</td>
-      <td class="num">${money(i.dPrice)}</td>
-      <td class="num">${i.dNet?.toFixed(0) ?? "—"}</td>
-      <td class="num">${dCostBadge(i.dMarginRate)}</td>
       <td class="num">${pct(i.share,0)}</td>
       <td><button class="btn-mini" data-act="price.edit" data-name="${esc(i.name)}">編輯</button></td></tr>`).join("");
   const w = p.weighted || {};
-  $("#priceTbl").innerHTML = `<thead><tr><th>品項</th><th class="num">變動成本</th><th class="num">店內售價</th><th class="num">成本率</th><th class="num">毛利率</th><th class="num">建議售價</th><th class="num">外送售價</th><th class="num">外送實收</th><th class="num">外送毛利率</th><th class="num">銷量佔比</th><th></th></tr></thead>
+  $("#priceTbl").innerHTML = `<thead><tr><th>品項</th><th class="num">變動成本</th><th class="num">店內售價</th><th class="num">成本率</th><th class="num">毛利率</th><th class="num">建議售價</th><th class="num">銷量佔比</th><th></th></tr></thead>
     <tbody>${rows}
     <tr><td colspan="3"><b>加權平均（依銷量佔比）</b></td><td class="num">${costBadge(w.costRate)}</td>
-    <td colspan="5" class="note">加權平均店內售價（客單價參考）</td><td class="num"><b>${w.avgPrice?.toFixed(1) ?? "—"}</b></td><td></td></tr></tbody>`;
+    <td colspan="2" class="note">加權平均店內售價（客單價參考）</td><td class="num"><b>${w.avgPrice?.toFixed(1) ?? "—"}</b></td><td></td></tr></tbody>`;
   const bomRows = (DATA.bom||[]).map(b => `
     <tr><td>${esc(b.name)}</td>
       <td class="num"><input type="number" step="1" value="${b.grams??""}" data-bom="${esc(b.name)}" style="${!(b.grams>0)?"border-color:var(--bad);background:var(--bad-bg)":""}"></td>
@@ -980,7 +994,7 @@ function renderPricing() {
 
 function renderPnl() {
   const pn = DATA.pnl; if (!pn) return;
-  const keys = pn.editableKeys || [];
+  const keys = (pn.editableKeys || []).filter(k => k.indexOf("外送") < 0); // 外送暫停：參數列隱藏（值已歸零、公式保留）
   const P = pn.params || {};
   const isPct = (k) => ["外送營收佔比","外送平台平均抽成","食材＋包材成本率","行銷費率"].indexOf(k) >= 0;
   const paramRows = keys.map(k => {
@@ -1110,8 +1124,6 @@ document.addEventListener("click", async (e) => {
     openModal("編輯定價｜" + i.name, [
       { key:"price", label:"店內售價（元）", type:"number", required:true },
       { key:"targetRate", label:"目標成本率", type:"percent" },
-      { key:"dPrice", label:"外送售價（元）", type:"number" },
-      { key:"dFee", label:"平台抽成", type:"percent" },
       { key:"share", label:"銷量佔比", type:"percent" }
     ], i, (v) => saveOp("pricing.update", { name:i.name, fields:v }, "定價已更新"));
   } else if (act === "bom.save") {
