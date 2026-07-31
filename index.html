@@ -874,14 +874,23 @@ function renderFlavorBoard() {
   const onSale = (DATA.recipes || []).filter(r => r.status === "定案" && r.finishedPerG != null);
   const bomS = (DATA.bom || []).find(b => (b.name || "").includes("單球")) || (DATA.bom || [])[0];
   const priS = (DATA.pricing?.items || []).find(i => (i.name || "").includes("單球")) || (DATA.pricing?.items || [])[0];
-  if (!onSale.length || !bomS || !priS || !priS.price) {
-    box.innerHTML = `<div class="card note">尚無「定案」口味（或缺少單球品項）。口味在「配方」分頁狀態改成「定案」後，會自動出現在這裡。</div>`;
+  if (!onSale.length) {
+    box.innerHTML = `<div class="card note">尚無「定案」口味。口味在「配方」分頁狀態改成「定案」後，會自動出現在這裡。</div>`;
+    return;
+  }
+  if (!priS || !(priS.price > 0)) {
+    box.innerHTML = `<div class="card note" style="border-left:3px solid var(--bad)">⚠ 讀不到「單球」品項的店內售價（定價表需有一列名稱含「單球」且售價＞0）。</div>`;
+    return;
+  }
+  if (!bomS || !(bomS.grams > 0)) {
+    box.innerHTML = `<div class="card note" style="border-left:3px solid var(--bad)">⚠ 讀不到有效的「單球冰體克數」（目前讀到：<b>${bomS ? esc(String(bomS.grams)) : "找不到名稱含「單球」的售價單位列"}</b>）→ 這就是單球總成本顯示 0 的原因。請到本頁下方「售價單位」表，把單球的冰體克數填回正數（例如 110）後按儲存；若整列不見了，代表 Sheet 的「售價單位BOM」分頁 A7–A10 列被改動，跟我說一聲我幫你補回。</div>`;
     return;
   }
   const packCost = bomS.packCost != null ? bomS.packCost : ((bomS.totalCost || 0) - (bomS.iceCost || 0));
+  const packWarn = !(packCost > 0) ? `<p class="note" style="color:var(--bad)">⚠ 包材成本讀到 ${packCost.toFixed(1)} 元——通常代表 Sheet「原物料主檔」的包材列（RM-101～RM-110）或「售價單位BOM」的包材數量列被改動，包材成本對照斷了。目前成本先以冰體計算。</p>` : "";
   const price = priS.price;
   const rows = onSale.map(r => {
-    const unitCost = bomS.grams * r.finishedPerG + packCost;
+    const unitCost = bomS.grams * r.finishedPerG + (packCost > 0 ? packCost : 0);
     return { r, unitCost, costRate: unitCost / price, margin: price - unitCost, marginRate: (price - unitCost) / price };
   }).sort((a, b) => b.costRate - a.costRate);
   const worst = rows[0], best = rows[rows.length - 1];
@@ -895,7 +904,7 @@ function renderFlavorBoard() {
     <td class="num"><b>${pct(x.marginRate)}</b></td>
     <td class="num">${x.r.share != null ? pct(x.r.share, 0) : "—"}</td></tr>`).join("");
   box.innerHTML = `<div class="t-scroll"><table><thead><tr><th>口味（由差到好排序）</th><th class="num">每克成本(元)</th><th class="num">單球總成本</th><th class="num">單球售價</th><th class="num">成本率</th><th class="num">毛利額(元)</th><th class="num">毛利率</th><th class="num">銷售佔比</th></tr></thead><tbody>${html}</tbody></table></div>
-    <p class="note">同一單球售價下，毛利率排序＝每克成本排序。毛利帶：最低 <b>${pct(worst.marginRate)}</b>（${esc(worst.r.flavor)}）～ 最高 <b>${pct(best.marginRate)}</b>（${esc(best.r.flavor)}）${redCount ? `｜<b style="color:var(--bad)">${redCount} 支超過 35% 警戒線</b>` : "｜全數在警戒線內"}。單品板管「口味決策」（調配方／專屬定價／佔比控管），下方混合成本依佔比加權後管「損益的數字」。</p>`;
+    <p class="note">同一單球售價下，毛利率排序＝每克成本排序。毛利帶：最低 <b>${pct(worst.marginRate)}</b>（${esc(worst.r.flavor)}）～ 最高 <b>${pct(best.marginRate)}</b>（${esc(best.r.flavor)}）${redCount ? `｜<b style="color:var(--bad)">${redCount} 支超過 35% 警戒線</b>` : "｜全數在警戒線內"}。單品板管「口味決策」（調配方／專屬定價／佔比控管），下方混合成本依佔比加權後管「損益的數字」。</p>${packWarn}`;
 }
 
 function renderPricing() {
@@ -920,7 +929,7 @@ function renderPricing() {
     <td colspan="5" class="note">加權平均店內售價（客單價參考）</td><td class="num"><b>${w.avgPrice?.toFixed(1) ?? "—"}</b></td><td></td></tr></tbody>`;
   const bomRows = (DATA.bom||[]).map(b => `
     <tr><td>${esc(b.name)}</td>
-      <td class="num"><input type="number" step="1" value="${b.grams??""}" data-bom="${esc(b.name)}"></td>
+      <td class="num"><input type="number" step="1" value="${b.grams??""}" data-bom="${esc(b.name)}" style="${!(b.grams>0)?"border-color:var(--bad);background:var(--bad-bg)":""}"></td>
       <td class="num">${b.iceCost!=null?b.iceCost.toFixed(1):"—"}</td>
       <td class="num">${b.packCost!=null?b.packCost.toFixed(2):"—"}</td>
       <td class="num"><b>${b.totalCost!=null?b.totalCost.toFixed(1):"—"}</b></td>
@@ -1083,7 +1092,9 @@ document.addEventListener("click", async (e) => {
   } else if (act === "bom.save") {
     const name = btn.dataset.name;
     const inp = document.querySelector(`input[data-bom="${CSS.escape(name)}"]`);
-    saveOp("bom.update", { name, grams:Number(inp.value) }, "冰體克數已更新");
+    const g = Number(inp.value);
+    if (!inp.value || !isFinite(g) || g <= 0) { toast("冰體克數必須是大於 0 的數字（例如 110）", true); return; }
+    saveOp("bom.update", { name, grams:g }, "冰體克數已更新");
   } else if (act === "pnl.save") {
     await savePnlParams();
   } else if (act === "coef.save") {
