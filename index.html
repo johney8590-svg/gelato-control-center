@@ -317,6 +317,11 @@ const DEMO_DATA = {
     {version:"STR-v1",flavor:"大湖草莓雪酪",type:"雪酪",status:"定案",share:0.20,note:"",items:[{rm:"RM-011",grams:550},{rm:"RM-004",grams:175},{rm:"RM-005",grams:55},{rm:"RM-006",grams:30},{rm:"RM-013",grams:25},{rm:"RM-007",grams:4},{rm:"RM-014",grams:161}]},
     {version:"MGO-v1",flavor:"愛文芒果雪酪",type:"雪酪",status:"定案",share:0.15,note:"",items:[{rm:"RM-012",grams:500},{rm:"RM-004",grams:160},{rm:"RM-005",grams:50},{rm:"RM-006",grams:25},{rm:"RM-013",grams:30},{rm:"RM-007",grams:4},{rm:"RM-014",grams:231}]}
   ],
+  deliverables:[
+    {row:2,taskId:"T01",name:"品牌定位簡報 v3",url:"https://drive.google.com/demo",status:"已驗收",note:"",updated:"2026/08/10 14:00"},
+    {row:3,taskId:"T02",name:"店址評估表（3 候選）",url:"https://drive.google.com/demo",status:"已提交",note:"",updated:"2026/08/12 09:00"},
+    {row:4,taskId:"T02",name:"租約草稿",url:"",status:"待提交",note:"房東下週回覆",updated:"2026/08/12 09:05"}
+  ],
   costcard:{version:"PIS-v2",flavor:"西西里開心果",type:"乳基",yieldRate:0.92,overrun:0.30,density:1.08,displayLoss:0.05,finishedPerG:null,solids:null,sugar:null,fat:null,verdicts:[]},
   bom:[
     {name:"內用/外帶 單球杯",grams:110,packCost:4.45},
@@ -352,6 +357,9 @@ const nt = new Intl.NumberFormat("zh-TW");
 const money = (v) => v == null ? "—" : nt.format(Math.round(v));
 const pct = (v, d=1) => v == null ? "—" : (v*100).toFixed(d) + "%";
 const esc = (s) => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const safeUrl = (u) => /^https?:\/\//i.test(u) ? u : "https://" + u;
+function delivMap() { const m = {}; (DATA?.deliverables||[]).forEach(d => { (m[d.taskId] = m[d.taskId] || []).push(d); }); return m; }
+const delivChip = (s) => `<span class="chip ${s==="已驗收"?"s-done":s==="已提交"?"s-run":"s-wait"}">${esc(s)}</span>`;
 const costBadge = (v) => v == null ? "—" : `<span class="badge ${v<=0.30?"b-ok":v<=0.35?"b-mid":"b-bad"}">${pct(v)}</span>`;
 const dCostBadge = (v) => { if (v == null) return "—"; const cr = 1 - v; return `<span class="badge ${cr<=0.40?"b-ok":cr<=0.50?"b-mid":"b-bad"}">${pct(v)}</span>`; };
 const statusChip = (s) => { const cls = s==="已完成"?"s-done":s==="進行中"?"s-run":s==="卡關"?"s-stuck":"s-wait"; return `<span class="chip ${cls}">${esc(s)}</span>`; };
@@ -613,6 +621,15 @@ function applyDemoWrite(op, pl) {
     Object.assign(P[key], pl.values);
   } else if (op === "pnl.coefs") {
     DATA.pnl.months.coef = pl.coefs.map(Number);
+  } else if (op === "deliverable.add") {
+    if (!G.some(t => t.id === pl.taskId)) throw new Error("找不到任務 " + pl.taskId);
+    const maxRow = Math.max(1, ...(DATA.deliverables||[]).map(d => d.row));
+    DATA.deliverables.push({ row:maxRow+1, taskId:pl.taskId, name:pl.name, url:pl.url||"", status:pl.status||"待提交", note:pl.note||"", updated:"（demo）" });
+  } else if (op === "deliverable.update") {
+    const d = (DATA.deliverables||[]).find(x => x.row === Number(pl.row)); if (!d) throw new Error("找不到交付物");
+    Object.assign(d, pl.fields);
+  } else if (op === "deliverable.remove") {
+    DATA.deliverables = (DATA.deliverables||[]).filter(x => x.row !== Number(pl.row));
   } else throw new Error("未知操作");
 }
 
@@ -723,6 +740,9 @@ function renderInsights() {
     const ratio = cust / be;
     out.push({cls: ratio >= 1.5 ? "good" : ratio >= 1.1 ? "info" : "", txt:`損益兩平 <b>${be.toFixed(0)} 人/日</b>，基準假設 ${cust} 人 → 安全墊 <b>${ratio.toFixed(2)}×</b>${ratio<1.1?"（貼著兩平線，優先驗證商圈流量）":ratio<1.5?"（尚可，仍建議實測商圈流量）":"（充足，以實測為準）"}。`});
   }
+  const dm2 = delivMap();
+  const doneNoDeliv = (DATA.gantt||[]).filter(t => t.status === "已完成" && !(dm2[t.id]||[]).length);
+  if (doneNoDeliv.length) out.push({cls:"info", txt:`<b>${doneNoDeliv.length}</b> 個已完成任務尚未掛交付物（${doneNoDeliv.map(t=>esc(t.id)).join("、")}）→ 完成的證據（檔案／合約／SOP）點甘特任務列「＋交付物」貼 Drive 連結留檔。`});
   const bomS = (DATA.bom||[]).find(b => (b.name||"").includes("單球"));
   const priS = (pr?.items||[]).find(i => (i.name||"").includes("單球"));
   if (bomS && priS && priS.price > 0) {
@@ -827,7 +847,9 @@ function showGpop(t, x, y) {
     <div class="row"><span>負責人</span><b>${esc(t.owner||"—")}</b></div>
     <div class="row"><span>前置任務</span><b>${esc(t.dep||"—")}</b></div>
     ${t.note?`<div class="row"><span>備註</span><b>${esc(t.note)}</b></div>`:""}
-    <div class="m-actions"><button class="btn-ghost" onclick="hideGpop()">關閉</button><button class="btn" data-act="task.edit" data-id="${esc(t.id)}">編輯</button></div>`;
+    <div style="margin-top:8px;font-weight:700;font-size:12.5px;color:var(--grey)">交付物</div>
+    ${(delivMap()[t.id]||[]).map(d => `<div class="row"><span>${d.url?`<a href="${esc(safeUrl(d.url))}" target="_blank" rel="noopener">${esc(d.name)}</a>`:esc(d.name)}</span><b>${delivChip(d.status)} <button class="btn-mini" data-act="deliv.edit" data-row="${d.row}">編輯</button></b></div>`).join("") || `<div class="note">尚無交付物——完成的證據（設計檔／合約／SOP／證照）請掛在這裡</div>`}
+    <div class="m-actions"><button class="btn-ghost" onclick="hideGpop()">關閉</button><button class="btn-ghost" data-act="deliv.new" data-task="${esc(t.id)}">＋交付物</button><button class="btn" data-act="task.edit" data-id="${esc(t.id)}">編輯</button></div>`;
   pop.style.display = "block";
   const W = 300, H = pop.offsetHeight || 250;
   pop.style.left = Math.max(8, Math.min(x + 10, innerWidth - W - 12)) + "px";
@@ -838,6 +860,7 @@ function hideGpop() { $("#gpop").style.display = "none"; gpopTask = null; }
 function renderGantt() {
   renderGanttChart();
   const g = DATA.gantt || [];
+  const dm = delivMap();
   if (!g.length) { $("#ganttTbl").innerHTML = "<tbody><tr><td>無任務</td></tr></tbody>"; return; }
   const ds = g.filter(t=>t.start&&t.end);
   const min = Math.min(...ds.map(t=>+new Date(t.start)));
@@ -860,9 +883,10 @@ function renderGantt() {
       <td>${statusChip(t.status)}</td>
       <td class="num">${pct(t.done,0)}</td>
       <td>${bar}</td>
+      <td class="num">${(dm[t.id]||[]).length ? `📎${dm[t.id].length}` : "—"}</td>
       <td><button class="btn-mini" data-act="task.edit" data-id="${esc(t.id)}">編輯</button></td></tr>`;
   }).join("");
-  $("#ganttTbl").innerHTML = `<thead><tr><th>編號</th><th>任務</th><th class="num">起訖</th><th>狀態</th><th class="num">完成</th><th>時間軸</th><th></th></tr></thead><tbody>${rows}</tbody>`;
+  $("#ganttTbl").innerHTML = `<thead><tr><th>編號</th><th>任務</th><th class="num">起訖</th><th>狀態</th><th class="num">完成</th><th>時間軸</th><th class="num">交付物</th><th></th></tr></thead><tbody>${rows}</tbody>`;
 }
 
 function renderRecipes() {
@@ -1079,7 +1103,19 @@ document.addEventListener("click", async (e) => {
   } else if (act === "task.edit") {
     hideGpop();
     const t = DATA.gantt.find(x => x.id === btn.dataset.id);
-    openModal("編輯任務 " + t.id, taskFields(), t, (v) => saveOp("task.update", { id:t.id, fields:v }, t.id + " 已更新"));
+    openModal("編輯任務 " + t.id, taskFields(), t, (v) => {
+      const msg = (v.status === "已完成" && !(delivMap()[t.id]||[]).length)
+        ? t.id + " 已完成——尚無交付物，記得點任務列「＋交付物」補上連結"
+        : t.id + " 已更新";
+      return saveOp("task.update", { id:t.id, fields:v }, msg);
+    });
+  } else if (act === "deliv.new") {
+    hideGpop();
+    delivModal(btn.dataset.task, null);
+  } else if (act === "deliv.edit") {
+    hideGpop();
+    const d = (DATA.deliverables||[]).find(x => String(x.row) === String(btn.dataset.row));
+    if (d) delivModal(d.taskId, d);
   } else if (act === "rm.new") {
     openModal("新增原料", [
       { key:"category", label:"類別", type:"select", options:["乳製品","糖類","穩定乳化","風味原料","水果","基礎","包材"] },
@@ -1212,6 +1248,24 @@ async function savePnlParams() {
   }
   await loadData();
   toast(`已更新 ${keys.length} 項參數，損益已重算`);
+}
+
+function delivModal(taskId, existing) {
+  const fields = [
+    { key:"name", label:"交付物名稱", type:"text", required:true, placeholder:"例：Logo AI檔／租約掃描／生產SOP v1" },
+    { key:"url", label:"連結", type:"text", placeholder:"貼 Google Drive 檔案或資料夾連結" },
+    { key:"status", label:"狀態", type:"select", options:["待提交","已提交","已驗收"] },
+    { key:"note", label:"備註", type:"text" }
+  ];
+  if (!existing) {
+    openModal(`新增交付物｜${taskId}`, fields, { status:"待提交" },
+      (v) => saveOp("deliverable.add", Object.assign({ taskId }, v), "交付物已新增"));
+  } else {
+    openModal(`編輯交付物｜${existing.taskId}`, fields, existing,
+      (v) => saveOp("deliverable.update", { row: existing.row, fields: v }, "交付物已更新"),
+      `<div style="text-align:right;margin-top:4px"><button class="btn-mini" id="delivDel" type="button" style="color:var(--bad);border-color:var(--bad)">刪除此交付物</button></div>`);
+    $("#delivDel").onclick = async () => { if (await saveOp("deliverable.remove", { row: existing.row }, "交付物已刪除")) closeModal(); };
+  }
 }
 
 function modalRecipeAdd() {
